@@ -21,9 +21,15 @@
   <ItemGroup>
     <ClCompile Include="src\Config.cpp" />
     <ClCompile Include="src\Main.cpp" />
+    <ClCompile Include="src\Paddle.cpp" />
+    <ClCompile Include="src\RenderManager.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\Color.h" />
     <ClInclude Include="src\Config.h" />
+    <ClInclude Include="src\Paddle.h" />
+    <ClInclude Include="src\RenderManager.h" />
+    <ClInclude Include="src\Vector.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>

@@ -1,21 +1,19 @@
-#include <sl.h>
-#include "Config.h"
+#include "RenderManager.h"
+#include "Paddle.h"
 
 int main()
 {
-	slWindow(config::resWidth, config::resHeight, "Simple SIGIL Example", false);
+	render::initWindow();
+	paddle::Paddle paddle = paddle::init();
 
-	while (!slShouldClose() && !slGetKey(SL_KEY_ESCAPE))
+	while (!render::windowShouldClose())
 	{
-		slSetBackColor(0.5, 0.75, 1.0);
+		render::drawBackground({ 0,0,0,1 });
+		paddle::draw(paddle);
 
-		slSetForeColor(1, 0, 0, 0.5);
-		slRectangleFill(config::resWidth * 0.5, config::resHeight * 0.5, 100, 100);
-
-		slRender();
+		render::endDraw();
 	}
-
-	slClose();
+	render::closeWindow();
 
 	return 0;
 }
