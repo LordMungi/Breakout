@@ -8,19 +8,20 @@ namespace paddle
 	Paddle init()
 	{
 		Paddle paddle;
-		paddle.position.x = config::gameWidth / 2;
-		paddle.position.y = 0.0;
-		paddle.size.x = 50.0;
-		paddle.size.y = 30.0;
+		paddle.position = { config::gameWidth / 2 , 20.0 };
+		paddle.size = { 50.0, 10.0 };
+		paddle.speed = 200;
 		return paddle;
 	}
 	void moveRight(Paddle& paddle)
 	{
-		
+		if (paddle.position.x + (paddle.size.x / 2) <= config::gameWidth)
+			paddle.position.x += paddle.speed * slGetDeltaTime();
 	}
 	void moveLeft(Paddle& paddle)
 	{
-
+		if (paddle.position.x - (paddle.size.x / 2) >= 0)
+			paddle.position.x -= paddle.speed * slGetDeltaTime();
 	}
 	void draw(Paddle paddle)
 	{

@@ -1,19 +1,8 @@
-#include "RenderManager.h"
-#include "Paddle.h"
+#include "Menu.h"
+
 
 int main()
 {
-	render::initWindow();
-	paddle::Paddle paddle = paddle::init();
-
-	while (!render::windowShouldClose())
-	{
-		render::drawBackground({ 0,0,0,1 });
-		paddle::draw(paddle);
-
-		render::endDraw();
-	}
-	render::closeWindow();
-
+	menu::run();
 	return 0;
 }

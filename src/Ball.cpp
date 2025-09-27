@@ -1,0 +1,44 @@
+#include "Ball.h"
+#include <iostream>
+#include <sl.h>
+#include "Config.h"
+#include "RenderManager.h"
+
+namespace ball
+{
+	Ball init()
+	{
+		Ball ball;
+		ball.position = { 0.0, 0.0 };
+		ball.direction = { 0.0, 0.0 };
+		ball.radius = 10;
+		ball.speed = 200;
+		return ball;
+	}
+
+	void move(Ball& ball)
+	{		
+		ball.position.x += ball.direction.x * ball.speed * slGetDeltaTime();
+		ball.position.y += ball.direction.y * ball.speed * slGetDeltaTime();
+	}
+	
+	void draw(Ball ball)
+	{
+		render::drawCircle(ball.position, ball.radius, { 1, 1, 1, 1 });
+	}
+
+	void launchUp(Ball& ball)
+	{
+		ball.direction.x = (double)(rand() % 8000) / 10000.0 - 0.4;
+		ball.direction.y = 1.0f - fabs(ball.direction.x);
+	}
+
+	void bounceHorizontal(Ball& ball)
+	{
+		ball.direction.x *= -1;
+	}
+	void bounceVertical(Ball& ball)
+	{
+		ball.direction.y *= -1;
+	}
+}

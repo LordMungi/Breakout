@@ -8,10 +8,8 @@ namespace render
 	void closeWindow();
 	bool windowShouldClose();
 
-	void drawBackground(utilities::Color color);
+	void drawBackground();
 	void drawRectangle(utilities::Vector2 position, utilities::Vector2 size, utilities::Color color);
 	void drawCircle(utilities::Vector2 position, double radius, utilities::Color color);
 	void endDraw();
-
-	utilities::Vector2 gameToScreen(utilities::Vector2 position);
 }

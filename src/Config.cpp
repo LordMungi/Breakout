@@ -2,6 +2,6 @@
 
 namespace config
 {
-	int gameWidth = 400;
-	int gameHeight = 300;
+	double gameWidth = 400;
+	double gameHeight = 300;
 }

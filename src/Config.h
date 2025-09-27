@@ -2,6 +2,6 @@
 
 namespace config
 {
-	extern int gameWidth;
-	extern int gameHeight;
+	extern double gameWidth;
+	extern double gameHeight;
 }
