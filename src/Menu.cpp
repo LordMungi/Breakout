@@ -5,6 +5,7 @@ namespace menu
 	void run()
 	{
 		render::initWindow();
+		render::loadTextures();
 
 		game::run();
 

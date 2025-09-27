@@ -2,6 +2,7 @@
 #include <sl.h>
 #include "Config.h"
 #include "RenderManager.h"
+#include "Textures.h"
 
 namespace paddle
 {
@@ -25,6 +26,7 @@ namespace paddle
 	}
 	void draw(Paddle paddle)
 	{
+		//render::drawSprite(textures::tray, paddle.position, paddle.size);
 		render::drawRectangle(paddle.position, paddle.size, { 1,1,1,1 });
 	}
 }
