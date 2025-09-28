@@ -10,17 +10,14 @@ namespace render
 
 	static utilities::Vector2 posToScreen(utilities::Vector2 position)
 	{
-		int gameResWidth = 4 * resHeight / 3;
-		int marginHeight = resHeight / 5;
-		int marginWidth = (resWidth - gameResWidth) / 2;
-		return { position.x * gameResWidth / config::gameWidth + marginWidth, position.y * (resHeight - marginHeight) / config::gameHeight + marginHeight };
+		int gameResWidth = config::gameWidth * resHeight / config::gameHeight;
+		int marginWidth = resWidth - gameResWidth;
+		return { position.x * gameResWidth / config::gameWidth, position.y * resHeight / config::gameHeight };
 	}
 	static utilities::Vector2 sizeToScreen(utilities::Vector2 size)
 	{
-		int gameResWidth = 4 * resHeight / 3;
-		int marginHeight = resHeight / 5;
-		int marginWidth = (resWidth - gameResWidth) / 2;
-		return { size.x * gameResWidth / config::gameWidth, size.y * (resHeight - marginHeight) / config::gameHeight};
+		int gameResWidth = config::gameWidth * resHeight / config::gameHeight;
+		return { size.x * gameResWidth / config::gameWidth, size.y * resHeight / config::gameHeight};
 	}
 
 	void initWindow()

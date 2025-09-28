@@ -10,10 +10,28 @@ namespace block
 		Broken
 	};
 
+	enum class Side
+	{
+		Null,
+		Top,
+		Left,
+		Right,
+		Bottom
+	};
+
 	struct Block
 	{
+		utilities::Vector2 position;
 		State state;
 	};
 
+	const utilities::Vector2 size = { 50, 15 };
 
+	const int maxWidth = 8;
+	const int maxHeight = 12;
+
+
+	void initArray(Block blocks[maxWidth][maxHeight]);
+
+	void drawArray(Block blocks[maxWidth][maxHeight]);
 }

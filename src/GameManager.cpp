@@ -10,6 +10,7 @@ namespace game
 	{
 		paddle::Paddle paddle;
 		ball::Ball ball;
+		block::Block blocks[block::maxWidth][block::maxHeight];
 	};
 
 	static Game init()
@@ -18,7 +19,8 @@ namespace game
 		Game game;
 		game.paddle = paddle::init();
 		game.ball = ball::init();
-		game.ball.position = { game.paddle.position.x, game.paddle.position.y + game.paddle.size.y * 2};
+		game.ball.position = { game.paddle.position.x, game.paddle.position.y + game.paddle.size.y * 2 };
+		block::initArray(game.blocks);
 
 		return game;
 	}
@@ -34,15 +36,17 @@ namespace game
 
 	}
 
-	static bool isBallCollidingWallHorizontal(ball::Ball ball)
+	static block::Side isBallCollidingWall(ball::Ball ball)
 	{
-		return (ball.position.y + ball.radius / 2 >= config::gameHeight ||
-			ball.position.y - ball.radius / 2 <= 0);
-	}
-	static bool isBallCollidingWallVertical(ball::Ball ball)
-	{
-		return (ball.position.x + ball.radius / 2 >= config::gameWidth ||
-			ball.position.x - ball.radius / 2 <= 0);
+		if (ball.position.y + ball.radius / 2 >= config::gameHeight)
+			return block::Side::Top;
+		if (ball.position.y - ball.radius / 2 <= 0)
+			return block::Side::Bottom;
+		if (ball.position.x + ball.radius / 2 >= config::gameWidth)
+			return block::Side::Right;
+		if (ball.position.x - ball.radius / 2 <= 0)
+			return block::Side::Left;
+		return block::Side::Null;
 	}
 	static bool isBallCollidingPaddle(ball::Ball ball, paddle::Paddle paddle)
 	{
@@ -50,6 +54,26 @@ namespace game
 			ball.position.x - ball.radius / 2 <= paddle.position.x + paddle.size.x / 2 &&
 			ball.position.y + ball.radius / 2 >= paddle.position.y - paddle.size.y / 2 &&
 			ball.position.y - ball.radius / 2 <= paddle.position.y + paddle.size.y / 2);
+	}
+	static block::Side isBallCollidingBlock(ball::Ball ball, block::Block block)
+	{
+		if (ball.position.x + ball.radius / 2 >= block.position.x - block::size.x / 2 &&
+			ball.position.x - ball.radius / 2 <= block.position.x + block::size.x / 2 &&
+			ball.position.y + ball.radius / 2 >= block.position.y - block::size.y / 2 &&
+			ball.position.y - ball.radius / 2 <= block.position.y + block::size.y / 2)
+		{
+			double distanceLeft =	abs((block.position.x - block::size.x / 2) - (ball.position.x + ball.radius / 2));
+			double distanceRight =	abs((block.position.x + block::size.x / 2) - (ball.position.x - ball.radius / 2));
+			double distanceBottom = abs((block.position.y - block::size.y / 2) - (ball.position.y + ball.radius / 2));
+			double distanceTop =	abs((block.position.y + block::size.y / 2) - (ball.position.y - ball.radius / 2));
+			double minDistance = std::min({ distanceLeft, distanceRight, distanceTop, distanceBottom });
+
+			if (minDistance == distanceLeft) return block::Side::Left;
+			if (minDistance == distanceRight) return block::Side::Right;
+			if (minDistance == distanceBottom) return block::Side::Bottom;
+			if (minDistance == distanceTop) return block::Side::Top;
+		}
+		return block::Side::Null;
 	}
 
 	static void bounceBallPaddle(ball::Ball& ball, paddle::Paddle paddle)
@@ -67,13 +91,71 @@ namespace game
 			game.ball.position.x = game.paddle.position.x;
 		else
 			ball::move(game.ball);
-
-		if (isBallCollidingWallVertical(game.ball))
-			ball::bounceHorizontal(game.ball);
-		if (isBallCollidingWallHorizontal(game.ball))
-			ball::bounceVertical(game.ball);
+				
 		if (isBallCollidingPaddle(game.ball, game.paddle))
 			bounceBallPaddle(game.ball, game.paddle);
+
+		switch (isBallCollidingWall(game.ball))
+		{
+			case block::Side::Top:
+				ball::bounceVertical(game.ball);
+				game.ball.position.y = config::gameHeight - game.ball.radius / 2;
+				break;
+			case block::Side::Bottom:
+				ball::bounceVertical(game.ball);
+				game.ball.position.y = 0 + game.ball.radius / 2;
+				break;
+			case block::Side::Right:
+				ball::bounceHorizontal(game.ball);
+				game.ball.position.x = config::gameWidth - game.ball.radius / 2;
+				break;
+			case block::Side::Left:
+				ball::bounceHorizontal(game.ball);
+				game.ball.position.x = 0 + game.ball.radius / 2;
+				break;
+		}
+
+		bool hasCollided = false;
+		for (int i = 0; i < block::maxWidth; i++)
+		{
+			for (int j = 0; j < block::maxHeight; j++)
+			{
+				if (game.blocks[i][j].state == block::State::Undamaged && !hasCollided)
+				{
+					switch (isBallCollidingBlock(game.ball, game.blocks[i][j]))
+					{
+					case block::Side::Top:
+						ball::bounceVertical(game.ball);
+						std::cout << "Top\n";
+						game.ball.position.y = game.blocks[i][j].position.y + block::size.y / 2 + game.ball.radius / 2;
+						game.blocks[i][j].state = block::State::Broken;
+						hasCollided = true;
+						break;
+					case block::Side::Bottom:
+						ball::bounceVertical(game.ball);
+						std::cout << "Bottom\n";
+						game.ball.position.y = game.blocks[i][j].position.y - block::size.y / 2 - game.ball.radius / 2;
+						game.blocks[i][j].state = block::State::Broken;
+						hasCollided = true;
+						break;
+					case block::Side::Left:
+						ball::bounceHorizontal(game.ball);
+						std::cout << "Left\n";
+						game.ball.position.x = game.blocks[i][j].position.x - block::size.x / 2 - game.ball.radius / 2;
+						game.blocks[i][j].state = block::State::Broken;
+						hasCollided = true;
+						break;
+					case block::Side::Right:
+						ball::bounceHorizontal(game.ball);
+						std::cout << "Right\n";
+						game.ball.position.x = game.blocks[i][j].position.x + block::size.x / 2 + game.ball.radius / 2;
+						game.blocks[i][j].state = block::State::Broken;
+						hasCollided = true;
+						break;
+					}
+				}
+			}
+		}
 	}
 
 	void run()
@@ -89,6 +171,7 @@ namespace game
 
 			paddle::draw(game.paddle);
 			ball::draw(game.ball);
+			block::drawArray(game.blocks);
 
 			render::endDraw();
 		}

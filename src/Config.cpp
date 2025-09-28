@@ -3,5 +3,5 @@
 namespace config
 {
 	double gameWidth = 400;
-	double gameHeight = 300;
+	double gameHeight = 400;
 }
