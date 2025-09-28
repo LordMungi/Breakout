@@ -32,6 +32,7 @@ namespace render
 	{
 		textures::loadMaid();
 		textures::loadTray();
+		textures::loadFont();
 	}
 	bool windowShouldClose()
 	{
@@ -62,6 +63,11 @@ namespace render
 		size = sizeToScreen(size);
 		slSetForeColor(1, 1, 1, 1);
 		slSprite(texture, position.x, position.y, size.x, size.y);
+	}
+	void drawText(utilities::Vector2 position, double size, std::string text)
+	{
+		slSetFont(textures::font, size);
+		//slText(position.x, position.y, text);
 	}
 
 	void endDraw()

@@ -13,6 +13,7 @@ namespace ball
 		ball.direction = { 0.0, 0.0 };
 		ball.radius = 10;
 		ball.speed = 200;
+		ball.isInGame = true;
 		return ball;
 	}
 
@@ -24,7 +25,8 @@ namespace ball
 	
 	void draw(Ball ball)
 	{
-		render::drawCircle(ball.position, ball.radius, { 1, 1, 1, 1 });
+		if (ball.isInGame)
+			render::drawCircle(ball.position, ball.radius, { 1, 1, 1, 1 });
 	}
 
 	void launchUp(Ball& ball)

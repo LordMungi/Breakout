@@ -21,8 +21,10 @@
   <ItemGroup>
     <ClCompile Include="src\Ball.cpp" />
     <ClCompile Include="src\Block.cpp" />
+    <ClCompile Include="src\Character.cpp" />
     <ClCompile Include="src\Config.cpp" />
     <ClCompile Include="src\GameManager.cpp" />
+    <ClCompile Include="src\HUD.cpp" />
     <ClCompile Include="src\Main.cpp" />
     <ClCompile Include="src\Menu.cpp" />
     <ClCompile Include="src\Paddle.cpp" />
@@ -32,9 +34,11 @@
   <ItemGroup>
     <ClInclude Include="src\Ball.h" />
     <ClInclude Include="src\Block.h" />
+    <ClInclude Include="src\Character.h" />
     <ClInclude Include="src\Color.h" />
     <ClInclude Include="src\Config.h" />
     <ClInclude Include="src\GameManager.h" />
+    <ClInclude Include="src\HUD.h" />
     <ClInclude Include="src\Menu.h" />
     <ClInclude Include="src\Paddle.h" />
     <ClInclude Include="src\RenderManager.h" />

@@ -9,6 +9,8 @@ namespace ball
 		utilities::Vector2 direction;
 		double radius;
 		double speed;
+		bool isInGame;
+		double respawnTimer;
 	};
 
 	Ball init();

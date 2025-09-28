@@ -5,6 +5,7 @@ namespace textures
 {
 	int maid;
 	int tray;
+	int font;
 
 	void loadMaid()
 	{
@@ -13,5 +14,9 @@ namespace textures
 	void loadTray()
 	{
 		tray = slLoadTexture("resources/sprites/tray/1.png");
+	}
+	void loadFont()
+	{
+		font = slLoadFont("resources/fonts/LEMONMILK-Regular.otf");
 	}
 }
