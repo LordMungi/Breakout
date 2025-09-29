@@ -23,6 +23,7 @@ namespace block
 	{
 		utilities::Vector2 position;
 		State state;
+		bool hasGlass;
 	};
 
 	const utilities::Vector2 size = { 50, 15 };
@@ -32,6 +33,7 @@ namespace block
 
 
 	void initArray(Block blocks[maxWidth][maxHeight]);
+	void setGlasses(Block blocks[maxWidth][maxHeight], int levelGlasses);
 
 	void drawArray(Block blocks[maxWidth][maxHeight]);
 }

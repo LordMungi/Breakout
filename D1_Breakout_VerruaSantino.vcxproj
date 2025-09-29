@@ -24,6 +24,7 @@
     <ClCompile Include="src\Character.cpp" />
     <ClCompile Include="src\Config.cpp" />
     <ClCompile Include="src\GameManager.cpp" />
+    <ClCompile Include="src\Glass.cpp" />
     <ClCompile Include="src\HUD.cpp" />
     <ClCompile Include="src\Main.cpp" />
     <ClCompile Include="src\Menu.cpp" />
@@ -38,6 +39,7 @@
     <ClInclude Include="src\Color.h" />
     <ClInclude Include="src\Config.h" />
     <ClInclude Include="src\GameManager.h" />
+    <ClInclude Include="src\Glass.h" />
     <ClInclude Include="src\HUD.h" />
     <ClInclude Include="src\Menu.h" />
     <ClInclude Include="src\Paddle.h" />

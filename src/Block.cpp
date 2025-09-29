@@ -17,9 +17,29 @@ namespace block
 
 				blocks[i][j].position = position;
 				position = { position.x, position.y - size.y};
+				blocks[i][j].hasGlass = false;
 			}
 			position.y = initialPos.y;
 			position.x += size.x;
+		}
+	}
+
+	void setGlasses(Block blocks[maxWidth][maxHeight], int levelGlasses)
+	{
+		int glassesCounter = 0;
+		while (glassesCounter < levelGlasses)
+		{
+			for (int i = 0; i < maxWidth; i++)
+			{
+				for (int j = 0; j < maxHeight; j++)
+				{
+					if (rand() % 1000 < 50 && glassesCounter < levelGlasses && !blocks[i][j].hasGlass)
+					{
+						blocks[i][j].hasGlass = true;
+						glassesCounter++;
+					}
+				}
+			}
 		}
 	}
 

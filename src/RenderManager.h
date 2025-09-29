@@ -5,6 +5,11 @@
 
 namespace render
 {
+	extern utilities::Vector2 resolution;
+
+	utilities::Vector2 gamePosToScreen(utilities::Vector2 position);
+	utilities::Vector2 gameSizeToScreen(utilities::Vector2 size);
+
 	void initWindow();
 	void closeWindow();
 	void loadTextures();
