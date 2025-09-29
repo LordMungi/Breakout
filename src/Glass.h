@@ -21,7 +21,7 @@ namespace glass
 
 	const int max = 20;
 	const utilities::Vector2 size = { 5, 10 };
-	const double speed = 50;
+	const double speed = 100;
 
 	void initArray(Glass glasses[max], int levelGlasses);
 

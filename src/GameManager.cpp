@@ -41,10 +41,12 @@ namespace game
 
 	static void inputUpdate(Game& game)
 	{
-		if (slGetKey(SL_KEY_RIGHT))
+		if (slGetKey(SL_KEY_RIGHT) && !game.character.isSliding)
 			character::moveRight(game.character);
-		if (slGetKey(SL_KEY_LEFT))
+		if (slGetKey(SL_KEY_LEFT) && !game.character.isSliding)
 			character::moveLeft(game.character);
+		if (slGetKey('x') || slGetKey('X'))
+			character::slide(game.character);
 		if (slGetKey(' ') && game.ball.direction.x == 0 && game.ball.direction.y == 0)
 			ball::launchUp(game.ball);
 
@@ -249,8 +251,15 @@ namespace game
 			if (game.glasses[i].state == glass::State::InTray)
 			{
 				game.glasses[i].position.x = game.character.position.x - game.glasses[i].offset;
+				game.glasses[i].position.y = game.character.paddle.position.y + game.character.paddle.size.y / 2 + glass::size.y / 2;
 			}
 		}
+	}
+
+	static void updateCharacter(Game& game)
+	{
+		if (game.character.isSliding)
+			character::slide(game.character);
 	}
 
 	void run()
@@ -264,6 +273,7 @@ namespace game
 			inputUpdate(game);
 			updateBall(game);
 			updateGlasses(game);
+			updateCharacter(game);
 
 			character::draw(game.character);
 			paddle::draw(game.character.paddle);

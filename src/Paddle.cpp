@@ -9,7 +9,7 @@ namespace paddle
 	Paddle init()
 	{
 		Paddle paddle;
-		paddle.position = { config::gameWidth / 2 , 50.0 };
+		paddle.position = { config::gameWidth / 2 , 0.0 };
 		paddle.size = { 50.0, 10.0 };
 		return paddle;
 	}
