@@ -3,6 +3,7 @@
 
 namespace glass
 {
+
 	enum class State
 	{
 		Null,
@@ -28,7 +29,7 @@ namespace glass
 		double offset;
 	};
 
-	const int max = 20;
+	const int max = 30;
 	const utilities::Vector2 size = { 4, 8 };
 	const double speed = 100;
 
@@ -38,6 +39,7 @@ namespace glass
 	int getGlassInTable(Glass glasses[max]);
 	int getGlassesFallen(Glass glasses[max]);
 	int getGlassesCaught(Glass glasses[max]);
+	int getGlassesInLevel(int level);
 
 	bool fall(Glass& glass);
 	void drawArray(Glass glasses[max]);

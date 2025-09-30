@@ -135,7 +135,7 @@ namespace menu
 					onExit = game::run(game::Mode::Normal, level);
 					if (onExit == game::OnExit::Next)
 						level++;
-				} while (onExit != game::OnExit::Quit);
+				} while (onExit != game::OnExit::Quit &&!render::windowShouldClose());
 			}
 		}
 		else if (hud::isMouseCollidingTextLeft(title::arcade.position, title::arcade.size, "Arcade"))
@@ -151,7 +151,7 @@ namespace menu
 					onExit = game::run(game::Mode::Arcade, level);
 					if (onExit == game::OnExit::Next)
 						level++;
-				} while (onExit != game::OnExit::Quit);
+				} while (onExit != game::OnExit::Quit && !render::windowShouldClose());
 			}
 		}
 		else if (hud::isMouseCollidingTextLeft(title::credits.position, title::credits.size, "Credits"))

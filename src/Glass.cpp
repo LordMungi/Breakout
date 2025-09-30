@@ -1,9 +1,12 @@
 #include "Glass.h"
 #include <sl.h>
 #include "RenderManager.h"
+#include "Config.h"
 
 namespace glass
 {
+	static int levels[config::maxLevels] = { 6, 10, 12, 15, 15, 16, 20, 20, 25, 30 };
+
 	void initArray(Glass glasses[max], int levelGlasses)
 	{
 		for (int i = 0; i < max; i++)
@@ -77,6 +80,13 @@ namespace glass
 				counter++;
 		}
 		return counter;
+	}
+	int getGlassesInLevel(int level)
+	{
+		if (level > config::maxLevels)
+			level = config::maxLevels - 1;
+
+		return levels[level];
 	}
 
 

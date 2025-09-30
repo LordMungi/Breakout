@@ -42,7 +42,7 @@ namespace game
 
 		game.balls[1] = ball::init();
 
-		game.levelGlasses = game.isArcade ? 3 : 10;
+		game.levelGlasses = game.isArcade ? 3 : glass::getGlassesInLevel(level);
 		block::initArray(game.blocks, level);
 		block::setGlasses(game.blocks, game.levelGlasses);
 		glass::initArray(game.glasses, game.levelGlasses);
@@ -431,6 +431,7 @@ namespace game
 				hud::drawPaused();
 				exitButton(game);
 				retryButton(game);
+				nextButton(game);
 			}
 			break;
 		}

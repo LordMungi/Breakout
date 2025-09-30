@@ -26,9 +26,9 @@ namespace block
 		bool hasGlass;
 	};
 
-	const utilities::Vector2 size = { 50, 12 };
+	const utilities::Vector2 size = { 30, 12 };
 
-	const int maxWidth = 6;
+	const int maxWidth = 10;
 	const int maxHeight = 15;
 
 	void initArray(Block blocks[maxWidth][maxHeight], int level);

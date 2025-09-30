@@ -6,4 +6,6 @@ namespace config
 
 	extern double gameWidth;
 	extern double gameHeight;
+
+	const int maxLevels = 10;
 }
