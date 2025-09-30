@@ -315,13 +315,24 @@ namespace game
 		if (game.character.state == character::State::Sliding)
 			character::slide(game.character);
 
-		if (glass::getGlassesFallen(game.glasses) >= game.levelGlasses)
+		if (game.isArcade)
+		{
+			if (block::areAllBlocksDestroyed(game.blocks))
+			{
+				for (int i = 0; i < ball::maxBalls; i++)
+				{
+					game.balls[i].isInGame = false;
+				}
+				game.character.state = character::State::Win;
+			}
+		}
+		else if (glass::getGlassesFallen(game.glasses) >= game.levelGlasses)
 		{
 			for (int i = 0; i < ball::maxBalls; i++)
 			{
 				game.balls[i].isInGame = false;
-				game.character.state = character::State::Win;
 			}
+			game.character.state = character::State::Win;
 		}
 
 		else if (game.character.lives < 1)
@@ -329,8 +340,8 @@ namespace game
 			for (int i = 0; i < ball::maxBalls; i++)
 			{
 				game.balls[i].isInGame = false;
-				game.character.state = character::State::Lose;
 			}
+			game.character.state = character::State::Lose;
 		}
 	}
 
@@ -356,7 +367,8 @@ namespace game
 	{
 
 		hud::drawLives(game.character);
-		hud::drawGlassesCaught(game.glasses, game.levelGlasses);
+		if(!game.isArcade)
+			hud::drawGlassesCaught(game.glasses, game.levelGlasses);
 		switch (game.character.state)
 		{
 		case character::State::Win:

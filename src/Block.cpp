@@ -43,6 +43,19 @@ namespace block
 		}
 	}
 
+	bool areAllBlocksDestroyed(Block blocks[maxWidth][maxHeight])
+	{
+		for (int i = 0; i < maxWidth; i++)
+		{
+			for (int j = 0; j < maxHeight; j++)
+			{
+				if (blocks[i][j].state == State::Undamaged)
+					return false;
+			}
+		}
+		return true;
+	}
+
 	void drawArray(Block blocks[maxWidth][maxHeight])
 	{
 		utilities::Color color;

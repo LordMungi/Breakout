@@ -29,11 +29,12 @@ namespace block
 	const utilities::Vector2 size = { 50, 15 };
 
 	const int maxWidth = 8;
-	const int maxHeight = 9;
+	const int maxHeight = 4;
 
 
 	void initArray(Block blocks[maxWidth][maxHeight]);
 	void setGlasses(Block blocks[maxWidth][maxHeight], int levelGlasses);
+	bool areAllBlocksDestroyed(Block blocks[maxWidth][maxHeight]);
 
 	void drawArray(Block blocks[maxWidth][maxHeight]);
 }
