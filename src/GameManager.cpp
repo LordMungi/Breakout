@@ -22,19 +22,24 @@ namespace game
 		block::Block blocks[block::maxWidth][block::maxHeight];
 		glass::Glass glasses[glass::max];
 		int levelGlasses;
+		bool isArcade;
 	};
 
-	static Game init()
+	static Game init(Mode mode)
 	{
 		srand(time(0));
 		Game game;
+
+		game.isArcade = mode == Mode::Arcade;
+
 		game.character = character::init();
 		game.ball = ball::init();
 		game.ball.position = { game.character.position.x, ballStartPoint };
-		game.levelGlasses = 10;
+		game.levelGlasses = game.isArcade ? 3 : 10;
 		block::initArray(game.blocks);
 		block::setGlasses(game.blocks, game.levelGlasses);
 		glass::initArray(game.glasses, game.levelGlasses);
+		glass::setPowerups(game.glasses, game.levelGlasses);
 
 		return game;
 	}
@@ -146,6 +151,13 @@ namespace game
 				game.ball.position.y = config::gameHeight - game.ball.radius / 2;
 				break;
 			case block::Side::Bottom:
+				if (game.isArcade)
+				{
+					game.ball.isInGame = false;
+					game.ball.respawnTimer = slGetTime();
+					game.character.lives--;
+				}
+
 				ball::bounceVertical(game.ball);
 				game.ball.position.y = 0 + game.ball.radius / 2;
 				break;
@@ -246,6 +258,17 @@ namespace game
 					game.glasses[i].state = glass::State::InTray;
 					game.glasses[i].position.y = game.character.paddle.position.y + game.character.paddle.size.y / 2 + glass::size.y / 2;
 					game.glasses[i].offset = game.character.position.x - game.glasses[i].position.x;
+					switch (game.glasses[i].type)
+					{
+					case glass::Type::Slide:
+						game.character.hasSlide = true;
+						break;
+					case glass::Type::Double:
+						break;
+					case glass::Type::Long:
+						game.character.paddle.size.x *= 1.2;
+						break;
+					}
 				}
 			}
 			if (game.glasses[i].state == glass::State::InTray)
@@ -262,9 +285,9 @@ namespace game
 			character::slide(game.character);
 	}
 
-	void run()
+	void run(Mode mode)
 	{
-		Game game = init();
+		Game game = init(mode);
 
 		while (!render::windowShouldClose() && game.character.lives > 0)
 		{

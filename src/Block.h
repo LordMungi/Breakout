@@ -29,7 +29,7 @@ namespace block
 	const utilities::Vector2 size = { 50, 15 };
 
 	const int maxWidth = 8;
-	const int maxHeight = 12;
+	const int maxHeight = 9;
 
 
 	void initArray(Block blocks[maxWidth][maxHeight]);

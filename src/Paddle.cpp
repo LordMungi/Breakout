@@ -13,6 +13,7 @@ namespace paddle
 		paddle.size = { 50.0, 10.0 };
 		return paddle;
 	}
+
 	void draw(Paddle paddle)
 	{
 		//render::drawSprite(textures::tray, paddle.position, paddle.size);

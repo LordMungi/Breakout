@@ -5,7 +5,7 @@
 
 namespace character
 {
-	static double slidingTime = 0.5;
+	static double slidingTime = 0.3;
 	static double slidingCooldown = 0.3;
 
 	Character init()
@@ -18,6 +18,7 @@ namespace character
 		character.speed = 200;
 		character.lives = 3;
 		character.isLookingAt = Side::Front;
+		character.hasSlide = false;
 		character.isSliding = false;
 		character.slidingTimer = 0;
 		character.slidingCooldownTimer = 0;
@@ -45,44 +46,47 @@ namespace character
 
 	void slide(Character& character)
 	{
-		if (!character.isSliding && slGetTime() - character.slidingCooldownTimer > slidingCooldown)
+		if (character.hasSlide)
 		{
-			character.size = { 60.0, 30.0 };
-			character.position = { character.position.x , character.size.y / 2 };
-			character.paddle.position.y = character.position.y + character.size.y / 2 + character.paddle.size.y / 2;
-			character.isSliding = true;
-			character.slidingTimer = slGetTime();
-		}
-
-		if (character.isSliding && slGetTime() - character.slidingTimer < slidingTime)
-		{
-			switch (character.isLookingAt)
+			if (!character.isSliding && slGetTime() - character.slidingCooldownTimer > slidingCooldown)
 			{
-			case Side::Front:
-				break;
-			case Side::Right:
-				if (character.position.x + (character.paddle.size.x / 2) <= config::gameWidth)
-				{
-					character.position.x += character.speed * slGetDeltaTime() * 2;
-					character.paddle.position.x += character.speed * slGetDeltaTime() * 2;
-				}				
-				break;
-			case Side::Left:
-				if (character.position.x - (character.paddle.size.x / 2) >= 0)
-				{
-					character.position.x -= character.speed * slGetDeltaTime() * 2;
-					character.paddle.position.x -= character.speed * slGetDeltaTime() * 2;
-				}				
-				break;
+				character.size = { 60.0, 30.0 };
+				character.position = { character.position.x , character.size.y / 2 };
+				character.paddle.position.y = character.position.y + character.size.y / 2 + character.paddle.size.y / 2;
+				character.isSliding = true;
+				character.slidingTimer = slGetTime();
 			}
-		}
-		else
-		{
-			character.size = { 40.0, 40.0 };
-			character.position = { character.position.x , character.size.y / 2 };
-			character.paddle.position.y = character.position.y + character.size.y / 2 + character.paddle.size.y / 2;
-			character.isSliding = false;
-			character.slidingCooldownTimer = slGetTime();
+
+			if (character.isSliding && slGetTime() - character.slidingTimer < slidingTime)
+			{
+				switch (character.isLookingAt)
+				{
+				case Side::Front:
+					break;
+				case Side::Right:
+					if (character.position.x + (character.paddle.size.x / 2) <= config::gameWidth)
+					{
+						character.position.x += character.speed * slGetDeltaTime() * 2;
+						character.paddle.position.x += character.speed * slGetDeltaTime() * 2;
+					}
+					break;
+				case Side::Left:
+					if (character.position.x - (character.paddle.size.x / 2) >= 0)
+					{
+						character.position.x -= character.speed * slGetDeltaTime() * 2;
+						character.paddle.position.x -= character.speed * slGetDeltaTime() * 2;
+					}
+					break;
+				}
+			}
+			else
+			{
+				character.size = { 40.0, 40.0 };
+				character.position = { character.position.x , character.size.y / 2 };
+				character.paddle.position.y = character.position.y + character.size.y / 2 + character.paddle.size.y / 2;
+				character.isSliding = false;
+				character.slidingCooldownTimer = slGetTime();
+			}
 		}
 	}
 

@@ -73,11 +73,18 @@ namespace menu
 			optionSelected = Options::Play;
 			if (slGetMouseButton(SL_MOUSE_BUTTON_LEFT))
 			{
-				game::run();
+				game::run(game::Mode::Normal);
 			}
 		}
 		else if (isMouseCollidingText(title::original.position, { slGetTextWidth("Original"), slGetTextHeight("Original") }))
+		{
 			optionSelected = Options::Original;
+			if (slGetMouseButton(SL_MOUSE_BUTTON_LEFT))
+			{
+				game::run(game::Mode::Arcade);
+			}
+
+		}
 		else if (isMouseCollidingText(title::exit.position, { slGetTextWidth("Exit"), slGetTextHeight("Exit") }))
 		{
 			optionSelected = Options::Exit;

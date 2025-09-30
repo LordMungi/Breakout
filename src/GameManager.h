@@ -3,5 +3,11 @@
 
 namespace game
 {
-	void run();
+	enum class Mode
+	{
+		Normal,
+		Arcade
+	};
+
+	void run(Mode mode);
 }

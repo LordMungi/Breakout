@@ -33,7 +33,7 @@ namespace block
 			{
 				for (int j = 0; j < maxHeight; j++)
 				{
-					if (rand() % 1000 < 50 && glassesCounter < levelGlasses && !blocks[i][j].hasGlass)
+					if (rand() % 1000 < 10 && glassesCounter < levelGlasses && !blocks[i][j].hasGlass)
 					{
 						blocks[i][j].hasGlass = true;
 						glassesCounter++;

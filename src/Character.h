@@ -20,6 +20,7 @@ namespace character
 		double speed;
 		int lives;
 
+		bool hasSlide;
 		bool isSliding;
 		double slidingTimer;
 		double slidingCooldownTimer;

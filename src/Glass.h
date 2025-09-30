@@ -23,7 +23,7 @@ namespace glass
 	struct Glass
 	{
 		utilities::Vector2 position;
-
+		Type type;
 		State state;
 		double offset;
 	};
@@ -33,6 +33,7 @@ namespace glass
 	const double speed = 100;
 
 	void initArray(Glass glasses[max], int levelGlasses);
+	void setPowerups(Glass glasses[max], int levelGlasses);
 
 	int getGlassInTable(Glass glasses[max]);
 
