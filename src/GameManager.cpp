@@ -383,7 +383,7 @@ namespace game
 
 		while (!render::windowShouldClose() && !game.shouldEnd)
 		{
-			render::drawBackground();
+			render::drawGameBackground();
 
 			inputUpdate(game);
 			if (game.isRunning)

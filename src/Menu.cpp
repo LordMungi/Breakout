@@ -10,6 +10,7 @@ namespace menu
 		Null,
 		Play,
 		Arcade,
+		Credits,
 		Exit
 	};
 
@@ -22,8 +23,9 @@ namespace menu
 		};
 
 		const Title title = { { render::resolution.x * 0.05, render::resolution.y * 0.8 }, render::resolution.y * 0.1 };
-		const Title play = { {render::resolution.x * 0.05, render::resolution.y * 0.4}, render::resolution.y * 0.1 };
-		const Title arcade = { {render::resolution.x * 0.05, render::resolution.y * 0.3}, render::resolution.y * 0.1 };
+		const Title play = { {render::resolution.x * 0.05, render::resolution.y * 0.5}, render::resolution.y * 0.1 };
+		const Title arcade = { {render::resolution.x * 0.05, render::resolution.y * 0.4}, render::resolution.y * 0.1 };
+		const Title credits = { {render::resolution.x * 0.05, render::resolution.y * 0.3}, render::resolution.y * 0.1 };
 		const Title exit = { {render::resolution.x * 0.05, render::resolution.y * 0.1}, render::resolution.y * 0.1 };
 
 	}
@@ -54,6 +56,14 @@ namespace menu
 			color = utilities::WHITE;
 		render::drawText(position, size, "Arcade", color);
 
+		position = title::credits.position;
+		size = title::credits.size;
+		if (optionSelected == Options::Credits)
+			color = utilities::GREY;
+		else
+			color = utilities::WHITE;
+		render::drawText(position, size, "Credits", color);
+
 		position = title::exit.position;
 		size = title::exit.size;
 		if (optionSelected == Options::Exit)
@@ -62,6 +72,48 @@ namespace menu
 			color = utilities::WHITE;
 		render::drawText(position, size, "Exit", color);
 
+	}
+
+	static bool exitButtonPressed()
+	{
+		utilities::Vector2 position = { render::resolution.x * 0.90, render::resolution.y * 0.90 };
+		double size = render::resolution.y * 0.05;
+		bool isSelected = false;
+
+		if (hud::isMouseCollidingText(position, size, "Exit"))
+		{
+			isSelected = true;
+			if (slGetMouseButton(SL_MOUSE_BUTTON_LEFT))
+			{
+				return true;
+			}
+		}
+		hud::drawExit(position, size, isSelected);
+		return false;
+	}
+
+	static void drawCredits()
+	{
+		do
+		{
+			render::drawBackground();
+			utilities::Vector2 position = title::title.position;
+			double size = title::title.size;
+			utilities::Color color = utilities::WHITE;
+
+			render::drawText(position, size, "Credits", color);
+
+
+			size = render::resolution.y * 0.06;
+			position = {position.x, render::resolution.y * 0.6};
+			render::drawText(position, size, "Programming & Art", color);
+
+			size = render::resolution.y * 0.05;
+			position = { position.x + render::resolution.x * 0.05, position.y - render::resolution.y * 0.065 };
+			render::drawText(position, size, "Santino Verrua (LordMungi)", color);
+
+			render::endDraw();
+		} while (!exitButtonPressed());
 	}
 
 	static void selectOption()
@@ -83,7 +135,14 @@ namespace menu
 			{
 				game::run(game::Mode::Arcade);
 			}
-
+		}
+		else if (hud::isMouseCollidingText(title::credits.position, title::credits.size, "Credits"))
+		{
+			optionSelected = Options::Credits;
+			if (slGetMouseButton(SL_MOUSE_BUTTON_LEFT))
+			{
+				drawCredits();
+			}
 		}
 		else if (hud::isMouseCollidingText(title::exit.position, title::exit.size, "Exit"))
 		{
@@ -96,6 +155,8 @@ namespace menu
 		else 
 			optionSelected = Options::Null;
 	}
+
+
 
 	void run()
 	{

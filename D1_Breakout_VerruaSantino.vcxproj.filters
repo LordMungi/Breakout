@@ -5,92 +5,120 @@
       <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
       <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
     </Filter>
-    <Filter Include="Archivos de encabezado">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    <Filter Include="Game">
+      <UniqueIdentifier>{c14ce7a0-772e-4247-906a-921f16f25a36}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Archivos de recursos">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    <Filter Include="Game\Character">
+      <UniqueIdentifier>{daad234a-e0c5-4027-8ccd-713e8c8d852f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\Character\Paddle">
+      <UniqueIdentifier>{ca374bb7-5f0a-4e13-a618-aec07330a721}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\Ball">
+      <UniqueIdentifier>{73641394-ce73-479f-9a7d-74dff8f5e4aa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\Block">
+      <UniqueIdentifier>{86c71ac5-2b3a-4260-bc20-41acaef0c2d9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\Glass">
+      <UniqueIdentifier>{d7251e56-076c-46d2-ad5a-f50253d5521a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\HUD">
+      <UniqueIdentifier>{4e328461-7cfa-4a6f-b7de-09b8dd8a5ff5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Render">
+      <UniqueIdentifier>{cf9e6480-d780-472a-a4ed-025256c02aab}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Render\Textures">
+      <UniqueIdentifier>{424e68de-2a0e-465b-b931-f58f05481601}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Menu">
+      <UniqueIdentifier>{352ad275-d828-494a-9c4f-53772b5d3a05}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Others">
+      <UniqueIdentifier>{1f02e451-71da-472f-ad6b-b951b4df1a6b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Others\Config">
+      <UniqueIdentifier>{21165f86-eacf-4fdd-8036-a0db4bcbeee4}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Main.cpp">
       <Filter>Archivos de origen</Filter>
     </ClCompile>
-    <ClCompile Include="src\Config.cpp">
-      <Filter>Archivos de origen</Filter>
-    </ClCompile>
-    <ClCompile Include="src\RenderManager.cpp">
-      <Filter>Archivos de origen</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Paddle.cpp">
-      <Filter>Archivos de origen</Filter>
-    </ClCompile>
-    <ClCompile Include="src\GameManager.cpp">
-      <Filter>Archivos de origen</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Menu.cpp">
-      <Filter>Archivos de origen</Filter>
-    </ClCompile>
     <ClCompile Include="src\Ball.cpp">
-      <Filter>Archivos de origen</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Textures.cpp">
-      <Filter>Archivos de origen</Filter>
+      <Filter>Game\Ball</Filter>
     </ClCompile>
     <ClCompile Include="src\Block.cpp">
-      <Filter>Archivos de origen</Filter>
+      <Filter>Game\Block</Filter>
     </ClCompile>
     <ClCompile Include="src\Character.cpp">
-      <Filter>Archivos de origen</Filter>
+      <Filter>Game\Character</Filter>
     </ClCompile>
-    <ClCompile Include="src\HUD.cpp">
-      <Filter>Archivos de origen</Filter>
+    <ClCompile Include="src\Paddle.cpp">
+      <Filter>Game\Character\Paddle</Filter>
     </ClCompile>
     <ClCompile Include="src\Glass.cpp">
-      <Filter>Archivos de origen</Filter>
+      <Filter>Game\Glass</Filter>
+    </ClCompile>
+    <ClCompile Include="src\HUD.cpp">
+      <Filter>Game\HUD</Filter>
+    </ClCompile>
+    <ClCompile Include="src\GameManager.cpp">
+      <Filter>Game</Filter>
+    </ClCompile>
+    <ClCompile Include="src\RenderManager.cpp">
+      <Filter>Render</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Textures.cpp">
+      <Filter>Render\Textures</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Menu.cpp">
+      <Filter>Menu</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Config.cpp">
+      <Filter>Others\Config</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\Config.h">
-      <Filter>Archivos de encabezado</Filter>
-    </ClInclude>
-    <ClInclude Include="src\RenderManager.h">
-      <Filter>Archivos de encabezado</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Color.h">
-      <Filter>Archivos de encabezado</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Paddle.h">
-      <Filter>Archivos de encabezado</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Vector.h">
-      <Filter>Archivos de encabezado</Filter>
-    </ClInclude>
-    <ClInclude Include="src\GameManager.h">
-      <Filter>Archivos de encabezado</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Menu.h">
-      <Filter>Archivos de encabezado</Filter>
-    </ClInclude>
     <ClInclude Include="src\Ball.h">
-      <Filter>Archivos de encabezado</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Textures.h">
-      <Filter>Archivos de encabezado</Filter>
+      <Filter>Game\Ball</Filter>
     </ClInclude>
     <ClInclude Include="src\Block.h">
-      <Filter>Archivos de encabezado</Filter>
+      <Filter>Game\Block</Filter>
     </ClInclude>
     <ClInclude Include="src\Character.h">
-      <Filter>Archivos de encabezado</Filter>
+      <Filter>Game\Character</Filter>
     </ClInclude>
-    <ClInclude Include="src\HUD.h">
-      <Filter>Archivos de encabezado</Filter>
+    <ClInclude Include="src\Paddle.h">
+      <Filter>Game\Character\Paddle</Filter>
     </ClInclude>
     <ClInclude Include="src\Glass.h">
-      <Filter>Archivos de encabezado</Filter>
+      <Filter>Game\Glass</Filter>
+    </ClInclude>
+    <ClInclude Include="src\HUD.h">
+      <Filter>Game\HUD</Filter>
+    </ClInclude>
+    <ClInclude Include="src\GameManager.h">
+      <Filter>Game</Filter>
+    </ClInclude>
+    <ClInclude Include="src\RenderManager.h">
+      <Filter>Render</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Textures.h">
+      <Filter>Render\Textures</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Menu.h">
+      <Filter>Menu</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Color.h">
+      <Filter>Others</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Vector.h">
+      <Filter>Others</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Config.h">
+      <Filter>Others\Config</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

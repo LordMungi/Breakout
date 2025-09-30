@@ -47,8 +47,13 @@ namespace render
 	void drawBackground()
 	{
 		slSetBackColor(0.1, 0.1, 0.1);
+	}
+	void drawGameBackground()
+	{
+		slSetBackColor(0.1, 0.1, 0.1);
 		drawRectangle({ config::gameWidth / 2, config::gameHeight / 2 }, { config::gameWidth, config::gameHeight }, { 0, 0, 0, 1 });
 	}
+
 	void drawRectangle(utilities::Vector2 position, utilities::Vector2 size, utilities::Color color)
 	{
 		position = gamePosToScreen(position);
