@@ -4,7 +4,7 @@
 
 namespace hud
 {
-	bool isMouseCollidingText(utilities::Vector2 position, double fontSize, std::string text)
+	bool isMouseCollidingTextLeft(utilities::Vector2 position, double fontSize, std::string text)
 	{
 		slSetFontSize(fontSize);
 		utilities::Vector2 size = { slGetTextWidth(text.c_str()), slGetTextHeight(text.c_str()) };
@@ -14,13 +14,24 @@ namespace hud
 			slGetMouseY() >= position.y &&
 			slGetMouseY() <= position.y + size.y);
 	}
+	bool isMouseCollidingTextRight(utilities::Vector2 position, double fontSize, std::string text)
+	{
+		slSetFontSize(fontSize);
+		utilities::Vector2 size = { slGetTextWidth(text.c_str()), slGetTextHeight(text.c_str()) };
 
-	void drawExit(utilities::Vector2 position, double size, bool isSelected)
+		return (slGetMouseX() >= position.x - size.x &&
+			slGetMouseX() <= position.x &&
+			slGetMouseY() >= position.y &&
+			slGetMouseY() <= position.y + size.y);
+	}
+
+
+	void drawButton(std::string text, utilities::Vector2 position, double size, bool isSelected)
 	{
 		utilities::Color color = utilities::WHITE;
 		if (isSelected)
 			color = utilities::GREY;
-		render::drawText(position, size, "Exit", color);
+		render::drawText(position, size, text, color, SL_ALIGN_RIGHT);
 	}
 
 	void drawGlassesCaught(glass::Glass glasses[glass::max], int levelGlasses)

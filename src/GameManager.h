@@ -10,5 +10,12 @@ namespace game
 		Arcade
 	};
 
-	void run(Mode mode);
+	enum class OnExit
+	{
+		Quit,
+		Retry,
+		Next
+	};
+
+	OnExit run(Mode mode, int level);
 }

@@ -5,6 +5,7 @@
 
 namespace menu
 {
+
 	enum class Options
 	{
 		Null,
@@ -76,11 +77,11 @@ namespace menu
 
 	static bool exitButtonPressed()
 	{
-		utilities::Vector2 position = { render::resolution.x * 0.90, render::resolution.y * 0.90 };
+		utilities::Vector2 position = { render::resolution.x * 0.95, render::resolution.y * 0.90 };
 		double size = render::resolution.y * 0.05;
 		bool isSelected = false;
 
-		if (hud::isMouseCollidingText(position, size, "Exit"))
+		if (hud::isMouseCollidingTextRight(position, size, "Exit"))
 		{
 			isSelected = true;
 			if (slGetMouseButton(SL_MOUSE_BUTTON_LEFT))
@@ -88,7 +89,7 @@ namespace menu
 				return true;
 			}
 		}
-		hud::drawExit(position, size, isSelected);
+		hud::drawButton("Exit", position, size, isSelected);
 		return false;
 	}
 
@@ -121,23 +122,39 @@ namespace menu
 	{
 		
 		slSetFont(textures::font, title::play.size);
-		if (hud::isMouseCollidingText(title::play.position, title::play.size, "Play"))
+		if (hud::isMouseCollidingTextLeft(title::play.position, title::play.size, "Play"))
 		{
 			optionSelected = Options::Play;
 			if (slGetMouseButton(SL_MOUSE_BUTTON_LEFT))
 			{
-				game::run(game::Mode::Normal);
+				int level = 0;
+				game::OnExit onExit;
+
+				do
+				{
+					onExit = game::run(game::Mode::Normal, level);
+					if (onExit == game::OnExit::Next)
+						level++;
+				} while (onExit != game::OnExit::Quit);
 			}
 		}
-		else if (hud::isMouseCollidingText(title::arcade.position, title::arcade.size, "Arcade"))
+		else if (hud::isMouseCollidingTextLeft(title::arcade.position, title::arcade.size, "Arcade"))
 		{
 			optionSelected = Options::Arcade;
 			if (slGetMouseButton(SL_MOUSE_BUTTON_LEFT))
 			{
-				game::run(game::Mode::Arcade);
+				int level = 0;
+				game::OnExit onExit;
+
+				do
+				{
+					onExit = game::run(game::Mode::Arcade, level);
+					if (onExit == game::OnExit::Next)
+						level++;
+				} while (onExit != game::OnExit::Quit);
 			}
 		}
-		else if (hud::isMouseCollidingText(title::credits.position, title::credits.size, "Credits"))
+		else if (hud::isMouseCollidingTextLeft(title::credits.position, title::credits.size, "Credits"))
 		{
 			optionSelected = Options::Credits;
 			if (slGetMouseButton(SL_MOUSE_BUTTON_LEFT))
@@ -145,7 +162,7 @@ namespace menu
 				drawCredits();
 			}
 		}
-		else if (hud::isMouseCollidingText(title::exit.position, title::exit.size, "Exit"))
+		else if (hud::isMouseCollidingTextLeft(title::exit.position, title::exit.size, "Exit"))
 		{
 			optionSelected = Options::Exit;
 			if (slGetMouseButton(SL_MOUSE_BUTTON_LEFT))

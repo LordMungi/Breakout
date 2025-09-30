@@ -4,10 +4,12 @@
 
 namespace block
 {
-	void initArray(Block blocks[maxWidth][maxHeight])
+	void initArray(Block blocks[maxWidth][maxHeight], int level)
 	{
 		utilities::Vector2 initialPos = { size.x / 2, config::gameHeight - size.y * 2 };
 		utilities::Vector2 position = { initialPos.x, initialPos.y};
+
+
 
 		for (int i = 0; i < maxWidth; i++)
 		{

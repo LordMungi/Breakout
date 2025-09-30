@@ -14,6 +14,8 @@ namespace game
 	const int ballStartPoint = 70;
 	double pauseTimer = 0;
 
+	OnExit onExit;
+
 	struct Game
 	{
 		character::Character character;
@@ -26,7 +28,7 @@ namespace game
 		bool shouldEnd;
 	};
 
-	static Game init(Mode mode)
+	static Game init(Mode mode, int level)
 	{
 		srand(time(0));
 		Game game;
@@ -41,7 +43,7 @@ namespace game
 		game.balls[1] = ball::init();
 
 		game.levelGlasses = game.isArcade ? 3 : 10;
-		block::initArray(game.blocks);
+		block::initArray(game.blocks, level);
 		block::setGlasses(game.blocks, game.levelGlasses);
 		glass::initArray(game.glasses, game.levelGlasses);
 		glass::setPowerups(game.glasses, game.levelGlasses);
@@ -350,20 +352,58 @@ namespace game
 
 	static void exitButton(Game& game)
 	{
-		utilities::Vector2 position = { render::resolution.x * 0.90, render::resolution.y * 0.90 };
+		utilities::Vector2 position = { render::resolution.x * 0.97, render::resolution.y * 0.9 };
 		double size = render::resolution.y * 0.05;
 		bool isSelected = false;
 
-		if (hud::isMouseCollidingText(position, size, "Exit"))
+		if (hud::isMouseCollidingTextRight(position, size, "Exit"))
 		{
 			isSelected = true;
 			if (slGetMouseButton(SL_MOUSE_BUTTON_LEFT))
 			{
 				game.shouldEnd = true;
+				onExit = OnExit::Quit;
+			}
+		}
+		hud::drawButton("Exit", position, size, isSelected);
+	}
+
+	static void retryButton(Game& game)
+	{
+		utilities::Vector2 position = { render::resolution.x * 0.97, render::resolution.y * 0.85 };
+		double size = render::resolution.y * 0.05;
+		bool isSelected = false;
+
+		if (hud::isMouseCollidingTextRight(position, size, "Retry"))
+		{
+			isSelected = true;
+			if (slGetMouseButton(SL_MOUSE_BUTTON_LEFT))
+			{
+				game.shouldEnd = true;
+				onExit = OnExit::Retry;
 			}
 		}
 
-		hud::drawExit(position, size, isSelected);
+		hud::drawButton("Retry", position, size, isSelected);
+	}
+
+	static void nextButton(Game& game)
+	{
+		utilities::Vector2 position = { render::resolution.x * 0.97, render::resolution.y * 0.8 };
+		double size = render::resolution.y * 0.05;
+		bool isSelected = false;
+
+		if (hud::isMouseCollidingTextRight(position, size, "Next"))
+		{
+			isSelected = true;
+			if (slGetMouseButton(SL_MOUSE_BUTTON_LEFT))
+			{
+				game.shouldEnd = true;
+				onExit = OnExit::Next;
+			}
+		}
+
+		hud::drawButton("Next", position, size, isSelected);
 	}
 
 	static void drawHud(Game& game)
@@ -377,24 +417,28 @@ namespace game
 		case character::State::Win:
 			hud::drawWin();
 			exitButton(game);
+			retryButton(game);
+			nextButton(game);
 			break;
 		case character::State::Lose:
 			hud::drawGameOver();
 			exitButton(game);
+			retryButton(game);
 			break;
 		default:
 			if (!game.isRunning)
 			{
 				hud::drawPaused();
 				exitButton(game);
+				retryButton(game);
 			}
 			break;
 		}
 	}
 
-	void run(Mode mode)
+	OnExit run(Mode mode, int level)
 	{
-		Game game = init(mode);
+		Game game = init(mode, level);
 
 		while (!render::windowShouldClose() && !game.shouldEnd)
 		{
@@ -419,5 +463,7 @@ namespace game
 
 			render::endDraw();
 		}
+
+		return onExit;
 	}
 }

@@ -26,13 +26,12 @@ namespace block
 		bool hasGlass;
 	};
 
-	const utilities::Vector2 size = { 50, 10 };
+	const utilities::Vector2 size = { 50, 12 };
 
 	const int maxWidth = 6;
-	const int maxHeight = 9;
+	const int maxHeight = 15;
 
-
-	void initArray(Block blocks[maxWidth][maxHeight]);
+	void initArray(Block blocks[maxWidth][maxHeight], int level);
 	void setGlasses(Block blocks[maxWidth][maxHeight], int levelGlasses);
 	bool areAllBlocksDestroyed(Block blocks[maxWidth][maxHeight]);
 
