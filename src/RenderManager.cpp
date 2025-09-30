@@ -6,11 +6,16 @@
 namespace render
 {
 	utilities::Vector2 resolution = { 1080, 720 };
+	utilities::Vector2 gameResolution = {};
+
+	static void setGameResolution()
+	{
+		gameResolution = gameSizeToScreen({ config::gameWidth, config::gameHeight });
+	}
 
 	static utilities::Vector2 gamePosToScreen(utilities::Vector2 position)
 	{
 		int gameResWidth = config::gameWidth * resolution.y / config::gameHeight;
-		int marginWidth = resolution.x - gameResWidth;
 		return { position.x * gameResWidth / config::gameWidth, position.y * resolution.y / config::gameHeight };
 	}
 	static utilities::Vector2 gameSizeToScreen(utilities::Vector2 size)
@@ -22,6 +27,7 @@ namespace render
 	void initWindow()
 	{		
 		slWindow(resolution.x, resolution.y, "Simple SIGIL Example", false);
+		setGameResolution();
 	}
 	void closeWindow()
 	{
@@ -65,6 +71,14 @@ namespace render
 	}
 	void drawText(utilities::Vector2 position, double size, std::string text, utilities::Color color)
 	{
+		slSetTextAlign(SL_ALIGN_LEFT);
+		slSetForeColor(color.r, color.g, color.b, color.a);
+		slSetFont(textures::font, size);
+		slText(position.x, position.y, text.c_str());
+	}
+	void drawText(utilities::Vector2 position, double size, std::string text, utilities::Color color, int align)
+	{
+		slSetTextAlign(align);
 		slSetForeColor(color.r, color.g, color.b, color.a);
 		slSetFont(textures::font, size);
 		slText(position.x, position.y, text.c_str());

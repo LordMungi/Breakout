@@ -1,5 +1,6 @@
 #pragma once
 #include "RenderManager.h"
+#include "HUD.h"
 
 namespace game
 {

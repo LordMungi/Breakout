@@ -37,6 +37,7 @@ namespace glass
 
 	int getGlassInTable(Glass glasses[max]);
 	int getGlassesFallen(Glass glasses[max]);
+	int getGlassesCaught(Glass glasses[max]);
 
 	bool fall(Glass& glass);
 	void drawArray(Glass glasses[max]);

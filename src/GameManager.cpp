@@ -8,7 +8,6 @@
 #include "Block.h"
 #include "Character.h"
 #include "Glass.h"
-#include "HUD.h"
 
 namespace game
 {
@@ -322,7 +321,6 @@ namespace game
 			{
 				game.balls[i].isInGame = false;
 				game.character.state = character::State::Win;
-				render::drawText({ config::gameWidth, config::gameHeight }, render::resolution.y * 0.1, "WINNER", utilities::WHITE);
 			}
 		}
 
@@ -332,8 +330,50 @@ namespace game
 			{
 				game.balls[i].isInGame = false;
 				game.character.state = character::State::Lose;
-				render::drawText({ config::gameWidth, config::gameHeight }, render::resolution.y * 0.1, "GAME OVER", utilities::WHITE);
 			}
+		}
+	}
+
+	static void exitButton(Game& game)
+	{
+		utilities::Vector2 position = { render::resolution.x * 0.90, render::resolution.y * 0.90 };
+		double size = render::resolution.y * 0.05;
+		bool isSelected = false;
+
+		if (hud::isMouseCollidingText(position, size, "Exit"))
+		{
+			isSelected = true;
+			if (slGetMouseButton(SL_MOUSE_BUTTON_LEFT))
+			{
+				game.shouldEnd = true;
+			}
+		}
+
+		hud::drawExit(position, size, isSelected);
+	}
+
+	static void drawHud(Game& game)
+	{
+
+		hud::drawLives(game.character);
+		hud::drawGlassesCaught(game.glasses, game.levelGlasses);
+		switch (game.character.state)
+		{
+		case character::State::Win:
+			hud::drawWin();
+			exitButton(game);
+			break;
+		case character::State::Lose:
+			hud::drawGameOver();
+			exitButton(game);
+			break;
+		default:
+			if (!game.isRunning)
+			{
+				hud::drawPaused();
+				exitButton(game);
+			}
+			break;
 		}
 	}
 
@@ -359,8 +399,7 @@ namespace game
 			ball::draw(game.balls[1]);
 			block::drawArray(game.blocks);
 			glass::drawArray(game.glasses);
-
-			hud::drawLives(game.character);
+			drawHud(game);
 
 			render::endDraw();
 		}
