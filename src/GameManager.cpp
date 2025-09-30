@@ -13,6 +13,7 @@
 namespace game
 {
 	const int ballStartPoint = 70;
+	double pauseTimer = 0;
 
 	struct Game
 	{
@@ -22,6 +23,8 @@ namespace game
 		glass::Glass glasses[glass::max];
 		int levelGlasses;
 		bool isArcade;
+		bool isRunning;
+		bool shouldEnd;
 	};
 
 	static Game init(Mode mode)
@@ -44,20 +47,30 @@ namespace game
 		glass::initArray(game.glasses, game.levelGlasses);
 		glass::setPowerups(game.glasses, game.levelGlasses);
 
+		game.isRunning = true;
+		game.shouldEnd = false;
+
 		return game;
 	}
 
 	static void inputUpdate(Game& game)
 	{
-		if (slGetKey(SL_KEY_RIGHT) && !game.character.isSliding)
-			character::moveRight(game.character);
-		if (slGetKey(SL_KEY_LEFT) && !game.character.isSliding)
-			character::moveLeft(game.character);
-		if (slGetKey('x') || slGetKey('X'))
-			character::slide(game.character);
-		if (slGetKey(' ') && game.balls[0].direction.x == 0 && game.balls[0].direction.y == 0)
-			ball::launchUp(game.balls[0]);
-
+		if (game.isRunning)
+		{
+			if (slGetKey(SL_KEY_RIGHT) && game.character.state == character::State::Neutral)
+				character::moveRight(game.character);
+			if (slGetKey(SL_KEY_LEFT) && game.character.state == character::State::Neutral)
+				character::moveLeft(game.character);
+			if (slGetKey('x') || slGetKey('X') && game.character.state == character::State::Neutral)
+				character::slide(game.character);
+			if (slGetKey(' ') && game.balls[0].direction.x == 0 && game.balls[0].direction.y == 0)
+				ball::launchUp(game.balls[0]);
+		}
+		if (slGetKey(SL_KEY_ESCAPE) && slGetTime() - pauseTimer > 0.2)
+		{
+			pauseTimer = slGetTime();
+			game.isRunning = !game.isRunning;
+		}
 	}
 
 	static void breakBlock(block::Block& block, glass::Glass glasses[glass::max])
@@ -300,22 +313,45 @@ namespace game
 
 	static void updateCharacter(Game& game)
 	{
-		if (game.character.isSliding)
+		if (game.character.state == character::State::Sliding)
 			character::slide(game.character);
+
+		if (glass::getGlassesFallen(game.glasses) >= game.levelGlasses)
+		{
+			for (int i = 0; i < ball::maxBalls; i++)
+			{
+				game.balls[i].isInGame = false;
+				game.character.state = character::State::Win;
+				render::drawText({ config::gameWidth, config::gameHeight }, render::resolution.y * 0.1, "WINNER", utilities::WHITE);
+			}
+		}
+
+		else if (game.character.lives < 1)
+		{
+			for (int i = 0; i < ball::maxBalls; i++)
+			{
+				game.balls[i].isInGame = false;
+				game.character.state = character::State::Lose;
+				render::drawText({ config::gameWidth, config::gameHeight }, render::resolution.y * 0.1, "GAME OVER", utilities::WHITE);
+			}
+		}
 	}
 
 	void run(Mode mode)
 	{
 		Game game = init(mode);
 
-		while (!render::windowShouldClose() && game.character.lives > 0)
+		while (!render::windowShouldClose() && !game.shouldEnd)
 		{
 			render::drawBackground();
 
 			inputUpdate(game);
-			updateBall(game);
-			updateGlasses(game);
-			updateCharacter(game);
+			if (game.isRunning)
+			{
+				updateBall(game);
+				updateGlasses(game);
+				updateCharacter(game);
+			}
 
 			character::draw(game.character);
 			paddle::draw(game.character.paddle);

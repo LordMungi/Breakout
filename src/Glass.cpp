@@ -58,6 +58,17 @@ namespace glass
 		}
 		return 999;
 	}
+	int getGlassesFallen(Glass glasses[max])
+	{
+		int counter = 0;
+		for (int i = 0; i < max; i++)
+		{
+			if (glasses[i].state == State::InTray || glasses[i].state == State::Broken)
+				counter++;
+		}
+		return counter;
+	}
+
 
 	bool fall(Glass& glass)
 	{

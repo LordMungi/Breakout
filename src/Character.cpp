@@ -19,9 +19,9 @@ namespace character
 		character.lives = 3;
 		character.isLookingAt = Side::Front;
 		character.hasSlide = false;
-		character.isSliding = false;
 		character.slidingTimer = 0;
 		character.slidingCooldownTimer = 0;
+		character.state = State::Neutral;
 		return character;
 	}
 
@@ -48,16 +48,16 @@ namespace character
 	{
 		if (character.hasSlide)
 		{
-			if (!character.isSliding && slGetTime() - character.slidingCooldownTimer > slidingCooldown)
+			if (character.state != State::Sliding && slGetTime() - character.slidingCooldownTimer > slidingCooldown)
 			{
 				character.size = { 60.0, 30.0 };
 				character.position = { character.position.x , character.size.y / 2 };
 				character.paddle.position.y = character.position.y + character.size.y / 2 + character.paddle.size.y / 2;
-				character.isSliding = true;
+				character.state = State::Sliding;
 				character.slidingTimer = slGetTime();
 			}
 
-			if (character.isSliding && slGetTime() - character.slidingTimer < slidingTime)
+			if (character.state == State::Sliding && slGetTime() - character.slidingTimer < slidingTime)
 			{
 				switch (character.isLookingAt)
 				{
@@ -84,7 +84,7 @@ namespace character
 				character.size = { 40.0, 40.0 };
 				character.position = { character.position.x , character.size.y / 2 };
 				character.paddle.position.y = character.position.y + character.size.y / 2 + character.paddle.size.y / 2;
-				character.isSliding = false;
+				character.state = State::Neutral;
 				character.slidingCooldownTimer = slGetTime();
 			}
 		}

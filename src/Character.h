@@ -4,6 +4,14 @@
 
 namespace character
 {
+	enum class State
+	{
+		Neutral,
+		Sliding,
+		Win,
+		Lose
+	};
+
 	enum class Side
 	{
 		Front,
@@ -16,12 +24,12 @@ namespace character
 		utilities::Vector2 position;
 		utilities::Vector2 size;
 		Side isLookingAt;
+		State state;
 
 		double speed;
 		int lives;
 
 		bool hasSlide;
-		bool isSliding;
 		double slidingTimer;
 		double slidingCooldownTimer;
 		

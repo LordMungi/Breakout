@@ -36,6 +36,7 @@ namespace glass
 	void setPowerups(Glass glasses[max], int levelGlasses);
 
 	int getGlassInTable(Glass glasses[max]);
+	int getGlassesFallen(Glass glasses[max]);
 
 	bool fall(Glass& glass);
 	void drawArray(Glass glasses[max]);
