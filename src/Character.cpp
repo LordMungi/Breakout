@@ -88,6 +88,6 @@ namespace character
 
 	void draw(Character character)
 	{
-		render::drawRectangle(character.position, character.size, { 1, 0, 0, 1 });
+		render::drawRectangle(character.position, character.size, utilities::RED);
 	}
 }

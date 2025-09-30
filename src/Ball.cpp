@@ -26,7 +26,7 @@ namespace ball
 	void draw(Ball ball)
 	{
 		if (ball.isInGame)
-			render::drawCircle(ball.position, ball.radius, { 1, 1, 1, 1 });
+			render::drawCircle(ball.position, ball.radius, utilities::WHITE);
 	}
 
 	void launchUp(Ball& ball)

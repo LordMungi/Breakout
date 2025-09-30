@@ -63,9 +63,9 @@ namespace render
 		slSetForeColor(1, 1, 1, 1);
 		slSprite(texture, position.x, position.y, size.x, size.y);
 	}
-	void drawText(utilities::Vector2 position, double size, std::string text)
+	void drawText(utilities::Vector2 position, double size, std::string text, utilities::Color color)
 	{
-		slSetForeColor(1, 1, 1, 1);
+		slSetForeColor(color.r, color.g, color.b, color.a);
 		slSetFont(textures::font, size);
 		slText(position.x, position.y, text.c_str());
 	}

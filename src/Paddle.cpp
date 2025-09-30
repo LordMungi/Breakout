@@ -16,6 +16,6 @@ namespace paddle
 	void draw(Paddle paddle)
 	{
 		//render::drawSprite(textures::tray, paddle.position, paddle.size);
-		render::drawRectangle(paddle.position, paddle.size, { 1,1,1,1 });
+		render::drawRectangle(paddle.position, paddle.size, utilities::WHITE);
 	}
 }

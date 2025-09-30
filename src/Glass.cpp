@@ -45,10 +45,10 @@ namespace glass
 			switch (glasses[i].state)
 			{
 			case State::Falling:
-				render::drawRectangle(glasses[i].position, size, { 0, 0, 1, 1 });
+				render::drawRectangle(glasses[i].position, size, utilities::BLUE);
 				break;
 			case State::InTray:
-				render::drawRectangle(glasses[i].position, size, { 0, 0, 1, 1 });
+				render::drawRectangle(glasses[i].position, size, utilities::BLUE);
 				break;
 			case State::Broken:
 				render::drawRectangle(glasses[i].position, size, { 0, 0, 0.6, 1 });

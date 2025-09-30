@@ -12,9 +12,18 @@ namespace glass
 		Broken
 	};
 
+	enum class Type
+	{
+		Normal,
+		Slide,
+		Double,
+		Long
+	};
+
 	struct Glass
 	{
 		utilities::Vector2 position;
+
 		State state;
 		double offset;
 	};
