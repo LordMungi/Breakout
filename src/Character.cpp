@@ -20,7 +20,7 @@ namespace character
 		character.speed = 150;
 		character.lives = 3;
 		character.isLookingAt = Side::Front;
-		character.hasSlide = false;
+		character.hasSlide = true;
 		character.slidingTimer = 0;
 		character.slidingCooldownTimer = 0;
 		character.state = State::Neutral;
@@ -50,11 +50,11 @@ namespace character
 
 	void slide(Character& character)
 	{
-		if (character.hasSlide)
+		if (character.hasSlide && character.isLookingAt != character::Side::Front)
 		{
 			if (character.state != State::Sliding && slGetTime() - character.slidingCooldownTimer > slidingCooldown)
 			{
-				character.size = { defaultSize.x * 1.2, defaultSize.y * 0.8 };
+				character.size = { defaultSize.y, defaultSize.x };
 				character.position = { character.position.x , character.size.y / 2 };
 				character.paddle.position.y = character.position.y + character.size.y / 2 + character.paddle.size.y / 2;
 				character.state = State::Sliding;
@@ -112,7 +112,27 @@ namespace character
 				render::animateSprite(textures::runLeft, 6, character.position, character.size);
 				break;
 			}
+			break;
 		}
+		case State::Sliding:
+		{
+			switch (character.isLookingAt)
+			{
+			case Side::Right:
+				render::animateSprite(textures::slideRight, 2, character.position, character.size);
+				break;
+			case Side::Left:
+				render::animateSprite(textures::slideLeft, 2, character.position, character.size);
+				break;
+			}
+			break;
+		}
+		case State::Win:
+			render::animateSprite(textures::win, 8, character.position, character.size);
+			break;
+		case State::Lose:
+			render::animateSprite(textures::lose, 2, character.position, character.size);
+			break;
 		default:
 			break;
 		}

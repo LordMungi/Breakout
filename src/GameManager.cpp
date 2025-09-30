@@ -26,6 +26,7 @@ namespace game
 		bool isArcade;
 		bool isRunning;
 		bool shouldEnd;
+		int level;
 	};
 
 	static Game init(Mode mode, int level)
@@ -33,6 +34,7 @@ namespace game
 		srand(time(0));
 		Game game;
 
+		game.level = level;
 		game.isArcade = mode == Mode::Arcade;
 
 		game.character = character::init();
@@ -238,7 +240,7 @@ namespace game
 					}
 				}
 			}
-			else if (ball::getBallsInGame(game.balls) < 1 && slGetTime() - game.balls[0].respawnTimer > 2)
+			else if (ball::getBallsInGame(game.balls) < 1 && slGetTime() - game.balls[0].respawnTimer > 1)
 			{
 				game.balls[0] = ball::init();
 				game.balls[0].isInGame = true;
@@ -275,6 +277,15 @@ namespace game
 			glass.position.y >= paddle.position.y);
 	}
 
+	static void setPaddleOnFloor(character::Character& character)
+	{
+		if (character.position.x + character.size.x > config::gameWidth)
+			character.paddle.position.x = character.position.x - character.size.x;
+		else
+			character.paddle.position.x = character.position.x + character.size.x;
+		character.paddle.position.y = character.paddle.size.y / 2;
+	}
+
 	static void updateGlasses(Game& game)
 	{
 		for (int i = 0; i < game.levelGlasses; i++)
@@ -309,7 +320,7 @@ namespace game
 			}
 			if (game.glasses[i].state == glass::State::InTray)
 			{
-				game.glasses[i].position.x = game.character.position.x - game.glasses[i].offset;
+				game.glasses[i].position.x = game.character.paddle.position.x - game.glasses[i].offset;
 				game.glasses[i].position.y = game.character.paddle.position.y + game.character.paddle.size.y / 2 + glass::size.y / 2;
 			}
 		}
@@ -329,6 +340,7 @@ namespace game
 					game.balls[i].isInGame = false;
 				}
 				game.character.state = character::State::Win;
+				setPaddleOnFloor(game.character);
 			}
 		}
 		else if (glass::getGlassesFallen(game.glasses) >= game.levelGlasses)
@@ -338,15 +350,17 @@ namespace game
 				game.balls[i].isInGame = false;
 			}
 			game.character.state = character::State::Win;
+			setPaddleOnFloor(game.character);
 		}
 
-		else if (game.character.lives < 1)
+		if (game.character.lives < 1)
 		{
 			for (int i = 0; i < ball::maxBalls; i++)
 			{
 				game.balls[i].isInGame = false;
 			}
 			game.character.state = character::State::Lose;
+			setPaddleOnFloor(game.character);
 		}
 	}
 
@@ -389,21 +403,24 @@ namespace game
 
 	static void nextButton(Game& game)
 	{
-		utilities::Vector2 position = { render::resolution.x * 0.97, render::resolution.y * 0.8 };
-		double size = render::resolution.y * 0.05;
-		bool isSelected = false;
-
-		if (hud::isMouseCollidingTextRight(position, size, "Next"))
+		if (game.level < config::maxLevels - 1)
 		{
-			isSelected = true;
-			if (slGetMouseButton(SL_MOUSE_BUTTON_LEFT))
-			{
-				game.shouldEnd = true;
-				onExit = OnExit::Next;
-			}
-		}
+			utilities::Vector2 position = { render::resolution.x * 0.97, render::resolution.y * 0.8 };
+			double size = render::resolution.y * 0.05;
+			bool isSelected = false;
 
-		hud::drawButton("Next", position, size, isSelected);
+			if (hud::isMouseCollidingTextRight(position, size, "Next"))
+			{
+				isSelected = true;
+				if (slGetMouseButton(SL_MOUSE_BUTTON_LEFT))
+				{
+					game.shouldEnd = true;
+					onExit = OnExit::Next;
+				}
+			}
+
+			hud::drawButton("Next", position, size, isSelected);
+		}
 	}
 
 	static void drawHud(Game& game)
