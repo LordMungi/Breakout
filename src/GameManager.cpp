@@ -14,11 +14,10 @@ namespace game
 {
 	const int ballStartPoint = 70;
 
-
 	struct Game
 	{
 		character::Character character;
-		ball::Ball ball;
+		ball::Ball balls[ball::maxBalls];
 		block::Block blocks[block::maxWidth][block::maxHeight];
 		glass::Glass glasses[glass::max];
 		int levelGlasses;
@@ -33,8 +32,12 @@ namespace game
 		game.isArcade = mode == Mode::Arcade;
 
 		game.character = character::init();
-		game.ball = ball::init();
-		game.ball.position = { game.character.position.x, ballStartPoint };
+		game.balls[0] = ball::init();
+		game.balls[0].position = { game.character.position.x, ballStartPoint };
+		game.balls[0].isInGame = true;
+
+		game.balls[1] = ball::init();
+
 		game.levelGlasses = game.isArcade ? 3 : 10;
 		block::initArray(game.blocks);
 		block::setGlasses(game.blocks, game.levelGlasses);
@@ -52,8 +55,8 @@ namespace game
 			character::moveLeft(game.character);
 		if (slGetKey('x') || slGetKey('X'))
 			character::slide(game.character);
-		if (slGetKey(' ') && game.ball.direction.x == 0 && game.ball.direction.y == 0)
-			ball::launchUp(game.ball);
+		if (slGetKey(' ') && game.balls[0].direction.x == 0 && game.balls[0].direction.y == 0)
+			ball::launchUp(game.balls[0]);
 
 	}
 
@@ -126,93 +129,104 @@ namespace game
 
 	static void updateBall(Game& game)
 	{
-		if (game.ball.isInGame)
+		for (int i = 0; i < ball::maxBalls; i++)
 		{
-			if (game.ball.direction.x == 0 && game.ball.direction.y == 0)
-				game.ball.position.x = game.character.position.x;
-			else
-				ball::move(game.ball);
-
-			if (isBallCollidingPaddle(game.ball, game.character.paddle))
-				bounceBallPaddle(game.ball, game.character.paddle);
-
-			if (isBallCollidingCharacter(game.ball, game.character))
+			if (game.balls[i].isInGame)
 			{
-				game.ball.isInGame = false;
-				game.ball.respawnTimer = slGetTime();
-				game.character.lives--;
+				if (game.balls[i].direction.x == 0 && game.balls[i].direction.y == 0)
+					game.balls[i].position.x = game.character.position.x;
+				else
+					ball::move(game.balls[i]);
 
-			}
+				if (isBallCollidingPaddle(game.balls[i], game.character.paddle))
+					bounceBallPaddle(game.balls[i], game.character.paddle);
 
-			switch (isBallCollidingWall(game.ball))
-			{
-			case block::Side::Top:
-				ball::bounceVertical(game.ball);
-				game.ball.position.y = config::gameHeight - game.ball.radius / 2;
-				break;
-			case block::Side::Bottom:
-				if (game.isArcade)
+				if (isBallCollidingCharacter(game.balls[i], game.character))
 				{
-					game.ball.isInGame = false;
-					game.ball.respawnTimer = slGetTime();
+					game.balls[i].isInGame = false;
 					game.character.lives--;
+					if (ball::getBallsInGame(game.balls) < 1)
+						game.balls[0].respawnTimer = slGetTime();
 				}
 
-				ball::bounceVertical(game.ball);
-				game.ball.position.y = 0 + game.ball.radius / 2;
-				break;
-			case block::Side::Right:
-				ball::bounceHorizontal(game.ball);
-				game.ball.position.x = config::gameWidth - game.ball.radius / 2;
-				break;
-			case block::Side::Left:
-				ball::bounceHorizontal(game.ball);
-				game.ball.position.x = 0 + game.ball.radius / 2;
-				break;
-			}
-
-			bool hasCollided = false;
-			for (int i = 0; i < block::maxWidth; i++)
-			{
-				for (int j = 0; j < block::maxHeight; j++)
+				switch (isBallCollidingWall(game.balls[i]))
 				{
-					if (game.blocks[i][j].state == block::State::Undamaged && !hasCollided)
+				case block::Side::Top:
+					ball::bounceVertical(game.balls[i]);
+					game.balls[i].position.y = config::gameHeight - game.balls[i].radius / 2;
+					break;
+				case block::Side::Bottom:
+					if (game.isArcade)
 					{
-						switch (isBallCollidingBlock(game.ball, game.blocks[i][j]))
+						game.balls[i].isInGame = false;
+						if (ball::getBallsInGame(game.balls) < 1)
 						{
-						case block::Side::Top:
-							ball::bounceVertical(game.ball);
-							game.ball.position.y = game.blocks[i][j].position.y + block::size.y / 2 + game.ball.radius / 2;
-							breakBlock(game.blocks[i][j], game.glasses);							
-							hasCollided = true;
-							break;
-						case block::Side::Bottom:
-							ball::bounceVertical(game.ball);
-							game.ball.position.y = game.blocks[i][j].position.y - block::size.y / 2 - game.ball.radius / 2;
-							breakBlock(game.blocks[i][j], game.glasses);
-							hasCollided = true;
-							break;
-						case block::Side::Left:
-							ball::bounceHorizontal(game.ball);
-							game.ball.position.x = game.blocks[i][j].position.x - block::size.x / 2 - game.ball.radius / 2;
-							breakBlock(game.blocks[i][j], game.glasses);
-							hasCollided = true;
-							break;
-						case block::Side::Right:
-							ball::bounceHorizontal(game.ball);
-							game.ball.position.x = game.blocks[i][j].position.x + block::size.x / 2 + game.ball.radius / 2;
-							breakBlock(game.blocks[i][j], game.glasses);
-							hasCollided = true;
-							break;
+							game.balls[0].respawnTimer = slGetTime();
+							game.character.lives--;
+						}
+					}
+
+					ball::bounceVertical(game.balls[i]);
+					game.balls[i].position.y = 0 + game.balls[i].radius / 2;
+					break;
+				case block::Side::Right:
+					ball::bounceHorizontal(game.balls[i]);
+					game.balls[i].position.x = config::gameWidth - game.balls[i].radius / 2;
+					break;
+				case block::Side::Left:
+					ball::bounceHorizontal(game.balls[i]);
+					game.balls[i].position.x = 0 + game.balls[i].radius / 2;
+					break;
+				}
+
+				bool hasCollided = false;
+				for (int j = 0; j < block::maxWidth; j++)
+				{
+					for (int k = 0; k < block::maxHeight; k++)
+					{
+						if (game.blocks[j][k].state == block::State::Undamaged && !hasCollided)
+						{
+							switch (isBallCollidingBlock(game.balls[i], game.blocks[j][k]))
+							{
+							case block::Side::Top:
+								std::cout << "Ball " << j << " Top\n";
+								ball::bounceVertical(game.balls[i]);
+								game.balls[i].position.y = game.blocks[j][k].position.y + block::size.y / 2 + game.balls[i].radius / 2;
+								breakBlock(game.blocks[j][k], game.glasses);
+								hasCollided = true;
+								break;
+							case block::Side::Bottom:
+								std::cout << "Ball " << j << " Bottom\n";
+								ball::bounceVertical(game.balls[i]);
+								game.balls[i].position.y = game.blocks[j][k].position.y - block::size.y / 2 - game.balls[i].radius / 2;
+								breakBlock(game.blocks[j][k], game.glasses);
+								hasCollided = true;
+								break;
+							case block::Side::Left:
+								std::cout << "Ball " << j << " Left\n";
+								ball::bounceHorizontal(game.balls[i]);
+								game.balls[i].position.x = game.blocks[j][k].position.x - block::size.x / 2 - game.balls[i].radius / 2;
+								breakBlock(game.blocks[j][k], game.glasses);
+								hasCollided = true;
+								break;
+							case block::Side::Right:
+								std::cout << "Ball " << j << " Right\n";
+								ball::bounceHorizontal(game.balls[i]);
+								game.balls[i].position.x = game.blocks[j][k].position.x + block::size.x / 2 + game.balls[i].radius / 2;
+								breakBlock(game.blocks[j][k], game.glasses);
+								hasCollided = true;
+								break;
+							}
 						}
 					}
 				}
 			}
-		}
-		else if (slGetTime() - game.ball.respawnTimer > 2)
-		{
-			game.ball = ball::init();
-			game.ball.position = { game.character.position.x, ballStartPoint };
+			else if (ball::getBallsInGame(game.balls) < 1 && slGetTime() - game.balls[0].respawnTimer > 2)
+			{
+				game.balls[0] = ball::init();
+				game.balls[0].isInGame = true;
+				game.balls[0].position = { game.character.position.x, ballStartPoint };
+			}
 		}
 	}
 
@@ -264,7 +278,12 @@ namespace game
 						game.character.hasSlide = true;
 						break;
 					case glass::Type::Double:
+					{
+						game.balls[1].isInGame = true;
+						game.balls[1].position = game.balls[0].position;
+						ball::launchUp(game.balls[1]);
 						break;
+					}
 					case glass::Type::Long:
 						game.character.paddle.size.x *= 1.2;
 						break;
@@ -300,7 +319,8 @@ namespace game
 
 			character::draw(game.character);
 			paddle::draw(game.character.paddle);
-			ball::draw(game.ball);
+			ball::draw(game.balls[0]);
+			ball::draw(game.balls[1]);
 			block::drawArray(game.blocks);
 			glass::drawArray(game.glasses);
 

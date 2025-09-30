@@ -13,8 +13,19 @@ namespace ball
 		ball.direction = { 0.0, 0.0 };
 		ball.radius = 10;
 		ball.speed = 200;
-		ball.isInGame = true;
+		ball.isInGame = false;
 		return ball;
+	}
+
+	int getBallsInGame(Ball balls[maxBalls])
+	{
+		int counter = 0;
+		for (int i = 0; i < maxBalls; i++)
+		{
+			if (balls[i].isInGame)
+				counter++;
+		}
+		return counter;
 	}
 
 	void move(Ball& ball)

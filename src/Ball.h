@@ -3,6 +3,8 @@
 
 namespace ball
 {
+	const int maxBalls = 2;
+
 	struct Ball
 	{
 		utilities::Vector2 position;
@@ -14,6 +16,7 @@ namespace ball
 	};
 
 	Ball init();
+	int getBallsInGame(Ball balls[maxBalls]);
 	void move(Ball& ball);
 	void draw(Ball ball);
 	void launchUp(Ball& ball);
