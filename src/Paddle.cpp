@@ -2,7 +2,6 @@
 #include <sl.h>
 #include "Config.h"
 #include "RenderManager.h"
-#include "Textures.h"
 
 namespace paddle
 {
@@ -10,7 +9,7 @@ namespace paddle
 	{
 		Paddle paddle;
 		paddle.position = { config::gameWidth / 2 , 0.0 };
-		paddle.size = { 50.0, 10.0 };
+		paddle.size = { 50.0, 6.0 };
 		return paddle;
 	}
 

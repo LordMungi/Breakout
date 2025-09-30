@@ -11,8 +11,8 @@ namespace ball
 		Ball ball;
 		ball.position = { 0.0, 0.0 };
 		ball.direction = { 0.0, 0.0 };
-		ball.radius = 10;
-		ball.speed = 200;
+		ball.radius = 8;
+		ball.speed = 150;
 		ball.isInGame = false;
 		return ball;
 	}

@@ -8,14 +8,16 @@ namespace character
 	static double slidingTime = 0.3;
 	static double slidingCooldown = 0.3;
 
+	const utilities::Vector2 defaultSize = { 40, 50 };
+
 	Character init()
 	{
 		Character character;
-		character.size = { 40.0, 40.0 };
+		character.size = defaultSize;
 		character.position = { config::gameWidth / 2 , character.size.y / 2 };
 		character.paddle = paddle::init();
 		character.paddle.position.y = character.position.y + character.size.y / 2 + character.paddle.size.y / 2;
-		character.speed = 200;
+		character.speed = 150;
 		character.lives = 3;
 		character.isLookingAt = Side::Front;
 		character.hasSlide = false;
@@ -50,7 +52,7 @@ namespace character
 		{
 			if (character.state != State::Sliding && slGetTime() - character.slidingCooldownTimer > slidingCooldown)
 			{
-				character.size = { 60.0, 30.0 };
+				character.size = { defaultSize.x * 1.2, defaultSize.y * 0.8 };
 				character.position = { character.position.x , character.size.y / 2 };
 				character.paddle.position.y = character.position.y + character.size.y / 2 + character.paddle.size.y / 2;
 				character.state = State::Sliding;
@@ -81,7 +83,7 @@ namespace character
 			}
 			else
 			{
-				character.size = { 40.0, 40.0 };
+				character.size = defaultSize;
 				character.position = { character.position.x , character.size.y / 2 };
 				character.paddle.position.y = character.position.y + character.size.y / 2 + character.paddle.size.y / 2;
 				character.state = State::Neutral;
@@ -92,6 +94,7 @@ namespace character
 
 	void draw(Character character)
 	{
-		render::drawRectangle(character.position, character.size, utilities::RED);
+		render::drawSprite(textures::maid, character.position, character.size);
+		//render::drawRectangle(character.position, character.size, utilities::RED);
 	}
 }

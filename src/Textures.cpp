@@ -3,20 +3,18 @@
 
 namespace textures
 {
+	int bricks;
+	int cafe;
 	int maid;
 	int tray;
 	int font;
 
-	void loadMaid()
+	void load()
 	{
+		bricks = slLoadTexture("resources/sprites/background/bricks.png");
+		cafe = slLoadTexture("resources/sprites/background/cafe.png");
 		maid = slLoadTexture("resources/sprites/maid/1.png");
-	}
-	void loadTray()
-	{
 		tray = slLoadTexture("resources/sprites/tray/1.png");
-	}
-	void loadFont()
-	{
 		font = slLoadFont("resources/fonts/LEMONMILK-Regular.otf");
 	}
 }

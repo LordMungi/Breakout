@@ -25,15 +25,17 @@ namespace hud
 
 	void drawGlassesCaught(glass::Glass glasses[glass::max], int levelGlasses)
 	{
-		utilities::Vector2 position = { render::gameResolution.x + render::resolution.x * 0.05, render::resolution.y * 0.2 };
+		utilities::Vector2 position = { render::gameResolution.x + render::resolution.x * 0.02, render::resolution.y * 0.3 };
 		double size = render::resolution.y * 0.05;
 
-		render::drawText(position, size, "Caught " + std::to_string(glass::getGlassesCaught(glasses)) + "/" + std::to_string(levelGlasses), utilities::WHITE);
+		render::drawText(position, size, "Caught ", utilities::WHITE);
+		position = { position.x, position.y - render::resolution.y * 0.05 };
+		render::drawText(position, size, std::to_string(glass::getGlassesCaught(glasses)) + "/" + std::to_string(levelGlasses), utilities::WHITE);
 	}
 
 	void drawLives(character::Character character)
 	{
-		utilities::Vector2 position = { render::gameResolution.x + render::resolution.x * 0.05, render::resolution.y * 0.1 };
+		utilities::Vector2 position = { render::gameResolution.x + render::resolution.x * 0.02, render::resolution.y * 0.1 };
 		double size = render::resolution.y * 0.05;
 
 		render::drawText(position, size, "Lives " + std::to_string(character.lives), utilities::WHITE);

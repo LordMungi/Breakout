@@ -2,10 +2,11 @@
 #include <sl.h>
 #include "Config.h"
 #include "Textures.h"
+#include <iostream>
 
 namespace render
 {
-	utilities::Vector2 resolution = { 1080, 720 };
+	utilities::Vector2 resolution = { 960, 720 };
 	utilities::Vector2 gameResolution = {};
 
 	static void setGameResolution()
@@ -35,9 +36,7 @@ namespace render
 	}
 	void loadTextures()
 	{
-		textures::loadMaid();
-		textures::loadTray();
-		textures::loadFont();
+		textures::load();
 	}
 	bool windowShouldClose()
 	{
@@ -47,11 +46,15 @@ namespace render
 	void drawBackground()
 	{
 		slSetBackColor(0.1, 0.1, 0.1);
+		slSetForeColor(1, 1, 1, 1);
+		slSprite(textures::bricks, resolution.x / 2, resolution.y / 2, resolution.x, resolution.y);
 	}
 	void drawGameBackground()
 	{
 		slSetBackColor(0.1, 0.1, 0.1);
-		drawRectangle({ config::gameWidth / 2, config::gameHeight / 2 }, { config::gameWidth, config::gameHeight }, { 0, 0, 0, 1 });
+		slSetForeColor(1, 1, 1, 1);
+		slSprite(textures::bricks, resolution.x / 2, resolution.y / 2, resolution.x, resolution.y);
+		drawSprite(textures::cafe, { config::gameWidth / 2, config::gameHeight / 2 }, { config::gameWidth, config::gameHeight });
 	}
 
 	void drawRectangle(utilities::Vector2 position, utilities::Vector2 size, utilities::Color color)

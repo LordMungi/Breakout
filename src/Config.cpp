@@ -4,6 +4,6 @@ namespace config
 {
 	bool programEnded = false;
 
-	double gameWidth = 400;
-	double gameHeight = 400;
+	double gameWidth = 300;
+	double gameHeight = 300;
 }

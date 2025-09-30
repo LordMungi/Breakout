@@ -2,6 +2,7 @@
 #include "Color.h"
 #include <iostream>
 #include "Vector.h"
+#include "Textures.h"
 
 namespace render
 {
