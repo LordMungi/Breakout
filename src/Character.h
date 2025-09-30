@@ -33,6 +33,8 @@ namespace character
 		double slidingTimer;
 		double slidingCooldownTimer;
 		
+		int animFrame;
+		bool isPaused;
 		paddle::Paddle paddle;
 	};
 
@@ -42,5 +44,5 @@ namespace character
 
 	void slide(Character& character);
 
-	void draw(Character character);
+	void draw(Character& character);
 }

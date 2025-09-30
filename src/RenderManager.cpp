@@ -9,6 +9,9 @@ namespace render
 	utilities::Vector2 resolution = { 960, 720 };
 	utilities::Vector2 gameResolution = {};
 
+	static int animFrame;
+	static double animTimer;
+
 	static void setGameResolution()
 	{
 		gameResolution = gameSizeToScreen({ config::gameWidth, config::gameHeight });
@@ -77,6 +80,12 @@ namespace render
 		slSetForeColor(1, 1, 1, 1);
 		slSprite(texture, position.x, position.y, size.x, size.y);
 	}
+	void animateSprite(int animation[20], int frames, utilities::Vector2 position, utilities::Vector2 size)
+	{
+		std::cout << animFrame << " - ";
+		std::cout << animFrame % frames  << std::endl;
+		render::drawSprite(animation[animFrame % frames], position, size);
+	}
 	void drawText(utilities::Vector2 position, double size, std::string text, utilities::Color color)
 	{
 		slSetTextAlign(SL_ALIGN_LEFT);
@@ -90,6 +99,14 @@ namespace render
 		slSetForeColor(color.r, color.g, color.b, color.a);
 		slSetFont(textures::font, size);
 		slText(position.x, position.y, text.c_str());
+	}
+	void nextFrame(bool isRunning)
+	{
+		if (slGetTime() - animTimer > 1.0 / 15.0 && isRunning)
+		{
+			animFrame++;
+			animTimer = slGetTime();
+		}
 	}
 
 	void endDraw()

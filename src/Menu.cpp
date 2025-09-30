@@ -94,6 +94,7 @@ namespace menu
 
 	static void drawCredits()
 	{
+		bool shouldExit = false;
 		do
 		{
 			render::drawBackground();
@@ -103,7 +104,6 @@ namespace menu
 
 			render::drawText(position, size, "Credits", color);
 
-
 			size = render::resolution.y * 0.06;
 			position = {position.x, render::resolution.y * 0.6};
 			render::drawText(position, size, "Programming & Art", color);
@@ -112,8 +112,9 @@ namespace menu
 			position = { position.x + render::resolution.x * 0.05, position.y - render::resolution.y * 0.065 };
 			render::drawText(position, size, "Santino Verrua (LordMungi)", color);
 
+			shouldExit = exitButtonPressed();
 			render::endDraw();
-		} while (!exitButtonPressed());
+		} while (!render::windowShouldClose() && !shouldExit);
 	}
 
 	static void selectOption()

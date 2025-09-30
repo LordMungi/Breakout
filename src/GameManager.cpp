@@ -58,8 +58,10 @@ namespace game
 		{
 			if (slGetKey(SL_KEY_RIGHT) && game.character.state == character::State::Neutral)
 				character::moveRight(game.character);
-			if (slGetKey(SL_KEY_LEFT) && game.character.state == character::State::Neutral)
+			else if (slGetKey(SL_KEY_LEFT) && game.character.state == character::State::Neutral)
 				character::moveLeft(game.character);
+			else if (game.character.state == character::State::Neutral)
+				game.character.isLookingAt = character::Side::Front;
 			if (slGetKey('x') || slGetKey('X') && game.character.state == character::State::Neutral)
 				character::slide(game.character);
 			if (slGetKey(' ') && game.balls[0].direction.x == 0 && game.balls[0].direction.y == 0)
@@ -69,6 +71,7 @@ namespace game
 		{
 			pauseTimer = slGetTime();
 			game.isRunning = !game.isRunning;
+			game.character.isPaused = !game.isRunning;
 		}
 	}
 
@@ -412,6 +415,7 @@ namespace game
 			block::drawArray(game.blocks);
 			glass::drawArray(game.glasses);
 			drawHud(game);
+			render::nextFrame(game.isRunning);
 
 			render::endDraw();
 		}

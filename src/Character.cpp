@@ -24,6 +24,8 @@ namespace character
 		character.slidingTimer = 0;
 		character.slidingCooldownTimer = 0;
 		character.state = State::Neutral;
+		character.animFrame = 0;
+		character.isPaused = false;
 		return character;
 	}
 
@@ -92,9 +94,28 @@ namespace character
 		}
 	}
 
-	void draw(Character character)
+	void draw(Character& character)
 	{
-		render::drawSprite(textures::maid, character.position, character.size);
+		switch (character.state)
+		{
+		case State::Neutral:
+		{
+			switch (character.isLookingAt)
+			{
+			case Side::Front:
+				render::drawSprite(textures::maid, character.position, character.size);
+				break;
+			case Side::Right:
+				render::animateSprite(textures::runRight, 6, character.position, character.size);
+				break;
+			case Side::Left:
+				render::animateSprite(textures::runLeft, 6, character.position, character.size);
+				break;
+			}
+		}
+		default:
+			break;
+		}
 		//render::drawRectangle(character.position, character.size, utilities::RED);
 	}
 }
