@@ -187,7 +187,6 @@ namespace block
 
 	void drawArray(Block blocks[maxWidth][maxHeight])
 	{
-		utilities::Color color;
 		for (int i = 0; i < maxWidth; i++)
 		{
 
@@ -195,12 +194,10 @@ namespace block
 			{
 				if (blocks[i][j].state == State::Undamaged)
 				{
-					if ((i + j) % 2)
-						color = { 1,1,1,1 };
+					if (blocks[i][j].hasGlass)
+						render::drawSprite(textures::blockFull, blocks[i][j].position, size);
 					else
-						color = { 0.8,0.8,0.8,1 };
-					render::drawRectangle(blocks[i][j].position, size, color);
-
+						render::drawSprite(textures::blockEmpty, blocks[i][j].position, size);
 				}
 			}
 		}

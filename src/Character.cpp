@@ -20,7 +20,7 @@ namespace character
 		character.speed = 150;
 		character.lives = 3;
 		character.isLookingAt = Side::Front;
-		character.hasSlide = true;
+		character.hasSlide = false;
 		character.slidingTimer = 0;
 		character.slidingCooldownTimer = 0;
 		character.state = State::Neutral;
@@ -103,7 +103,7 @@ namespace character
 			switch (character.isLookingAt)
 			{
 			case Side::Front:
-				render::drawSprite(textures::maid, character.position, character.size);
+				render::drawSprite(textures::idle, character.position, character.size);
 				break;
 			case Side::Right:
 				render::animateSprite(textures::runRight, 6, character.position, character.size);

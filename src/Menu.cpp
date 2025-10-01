@@ -12,6 +12,7 @@ namespace menu
 		Play,
 		Arcade,
 		Credits,
+		HowToPlay,
 		Exit
 	};
 
@@ -24,9 +25,10 @@ namespace menu
 		};
 
 		const Title title = { { render::resolution.x * 0.05, render::resolution.y * 0.8 }, render::resolution.y * 0.1 };
-		const Title play = { {render::resolution.x * 0.05, render::resolution.y * 0.5}, render::resolution.y * 0.1 };
-		const Title arcade = { {render::resolution.x * 0.05, render::resolution.y * 0.4}, render::resolution.y * 0.1 };
-		const Title credits = { {render::resolution.x * 0.05, render::resolution.y * 0.3}, render::resolution.y * 0.1 };
+		const Title play = { {render::resolution.x * 0.05, render::resolution.y * 0.6}, render::resolution.y * 0.1 };
+		const Title arcade = { {render::resolution.x * 0.05, render::resolution.y * 0.5}, render::resolution.y * 0.1 };
+		const Title credits = { {render::resolution.x * 0.05, render::resolution.y * 0.4}, render::resolution.y * 0.1 };
+		const Title howtoplay = { {render::resolution.x * 0.05, render::resolution.y * 0.3}, render::resolution.y * 0.1 };
 		const Title exit = { {render::resolution.x * 0.05, render::resolution.y * 0.1}, render::resolution.y * 0.1 };
 
 	}
@@ -64,6 +66,14 @@ namespace menu
 		else
 			color = utilities::WHITE;
 		render::drawText(position, size, "Credits", color);
+
+		position = title::howtoplay.position;
+		size = title::howtoplay.size;
+		if (optionSelected == Options::HowToPlay)
+			color = utilities::GREY;
+		else
+			color = utilities::WHITE;
+		render::drawText(position, size, "How To play", color);
 
 		position = title::exit.position;
 		size = title::exit.size;
@@ -118,6 +128,53 @@ namespace menu
 		} while (!render::windowShouldClose() && !shouldExit);
 	}
 
+	static void drawHowToPlay()
+	{
+		bool shouldExit = false;
+		do
+		{
+			render::drawBackground();
+			utilities::Vector2 position = title::title.position;
+			double size = title::title.size;
+			utilities::Color color = utilities::WHITE;
+
+			render::drawText(position, size, "How to play", color);
+
+			size = render::resolution.y * 0.06;
+			position = { position.x, render::resolution.y * 0.7 };
+			render::drawText(position, size, "Normal", color);
+
+			size = render::resolution.y * 0.05;
+			position = { position.x + render::resolution.x * 0.05, position.y - render::resolution.y * 0.065 };
+			render::drawText(position, size, "Try to catch all the glasses!", color);
+
+			size = render::resolution.y * 0.06;
+			position = { position.x - render::resolution.x * 0.05, render::resolution.y * 0.55 };
+			render::drawText(position, size, "Arcade", color);
+
+			size = render::resolution.y * 0.05;
+			position = { position.x + render::resolution.x * 0.05, position.y - render::resolution.y * 0.065 };
+			render::drawText(position, size, "Destroy all the blocks without \ntouching the floor!", color);
+
+			size = render::resolution.y * 0.04;
+			position = { render::resolution.x * 0.03, render::resolution.y * 0.3 };
+			render::drawText(position, size, "Move - Arrow Keys", color);
+			position = { position.x, position.y - render::resolution.y * 0.04 };
+			render::drawText(position, size, "Start - SPACE", color);
+			position = { position.x, position.y - render::resolution.y * 0.04 };
+			render::drawText(position, size, "Slide - X (only with powerup)", color);
+
+			position = { render::resolution.x * 0.6, render::resolution.y * 0.3 };
+			render::drawText(position, size, "RED - Unlocks slide", utilities::RED);
+			position = { position.x, position.y - render::resolution.y * 0.04 };
+			render::drawText(position, size, "GREEN - Double ball", utilities::GREEN);
+			position = { position.x, position.y - render::resolution.y * 0.04 };
+			render::drawText(position, size, "GOLD - Long paddle", utilities::YELLOW);
+			shouldExit = exitButtonPressed();
+			render::endDraw();
+		} while (!render::windowShouldClose() && !shouldExit);
+	}
+
 	static void selectOption()
 	{
 		
@@ -162,6 +219,14 @@ namespace menu
 				drawCredits();
 			}
 		}
+		else if (hud::isMouseCollidingTextLeft(title::howtoplay.position, title::howtoplay.size, "How to play"))
+		{
+			optionSelected = Options::HowToPlay;
+			if (slGetMouseButton(SL_MOUSE_BUTTON_LEFT))
+			{
+				drawHowToPlay();
+			}
+		}
 		else if (hud::isMouseCollidingTextLeft(title::exit.position, title::exit.size, "Exit"))
 		{
 			optionSelected = Options::Exit;
@@ -171,7 +236,7 @@ namespace menu
 			}
 		}
 		else 
-			optionSelected = Options::Null;
+			optionSelected = Options::Null;	
 	}
 
 

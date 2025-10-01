@@ -109,29 +109,26 @@ namespace glass
 			{
 			case State::Falling:
 			case State::InTray:
+			case State::Broken:
 			{
 				switch (glasses[i].type)
 				{
 				case Type::Normal:
-					render::drawRectangle(glasses[i].position, size, utilities::BLUE);
+					render::drawSprite(textures::glassNormal, glasses[i].position, size);
 					break;
 				case Type::Slide:
-					render::drawRectangle(glasses[i].position, size, utilities::RED);
+					render::drawSprite(textures::glassSlide, glasses[i].position, size);
 					break;
 				case Type::Double:
-					render::drawRectangle(glasses[i].position, size, utilities::GREEN);
+					render::drawSprite(textures::glassDouble, glasses[i].position, size);
 					break;
 				case Type::Long:
-					render::drawRectangle(glasses[i].position, size, utilities::YELLOW);
+					render::drawSprite(textures::glassGold, glasses[i].position, size);
 					break;
 				}
 				break;
 			}
-			case State::Broken:
-				render::drawRectangle(glasses[i].position, size, { 0, 0, 0.6, 1 });
-				break;
 			}
 		}
 	}
-
 }

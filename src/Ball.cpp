@@ -37,7 +37,7 @@ namespace ball
 	void draw(Ball ball)
 	{
 		if (ball.isInGame)
-			render::drawCircle(ball.position, ball.radius, utilities::WHITE);
+			render::animateSprite(textures::ball, 6 ,ball.position, {ball.radius, ball.radius});
 	}
 
 	void launchUp(Ball& ball)
