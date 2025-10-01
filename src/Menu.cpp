@@ -163,6 +163,8 @@ namespace menu
 			render::drawText(position, size, "Start - SPACE", color);
 			position = { position.x, position.y - render::resolution.y * 0.04 };
 			render::drawText(position, size, "Slide - X (only with powerup)", color);
+			position = { position.x, position.y - render::resolution.y * 0.04 };
+			render::drawText(position, size, "ESC - Pause", color);
 
 			position = { render::resolution.x * 0.6, render::resolution.y * 0.3 };
 			render::drawText(position, size, "RED - Unlocks slide", utilities::RED);
